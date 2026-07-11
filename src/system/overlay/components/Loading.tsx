@@ -1,4 +1,3 @@
-/** Loading 오버레이 */
 export default function Loading() {
 
   return (

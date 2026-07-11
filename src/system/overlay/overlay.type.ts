@@ -14,5 +14,6 @@ export type ConfirmState = {
 
 // popup 상태
 export type PopupState = {
+  title: string;
   content: React.ReactNode;
 } | null;

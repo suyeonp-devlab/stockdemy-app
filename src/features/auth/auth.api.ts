@@ -4,7 +4,7 @@ import { MeResponse } from "@/features/auth/auth.type";
 // 내 정보 조회 (refreshToken으로 accessToken 재발급)
 export const getMe = () =>
   requestRequired<MeResponse>({ method: "GET", url: "/api/users/me", meta: {
-    skipAuthRefresh: true, skipErrorAlert: true
+    skipErrorAlert: true
   }});
 
 // 로그아웃

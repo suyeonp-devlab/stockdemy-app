@@ -1,11 +1,11 @@
 "use client";
 
 import { useContext } from "react";
-import { OverlayContext } from "./OverlayProvider";
+import { OverlayContext } from "@/system/overlay/OverlayProvider";
 
 /**
  * overlay hook
- * [사용 예시] const { alert, confirm, openPopup, closePopup, showLoading, hideLoading } = useOverlay();
+ * @example const { alert, confirm } = useOverlay();
  */
 export function useOverlay() {
   const ctx = useContext(OverlayContext);

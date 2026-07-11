@@ -8,7 +8,7 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { overlayBridge } from "@/shared/lib/overlay-bridge";
+import { overlayBridge } from "@/system/overlay/overlay-bridge";
 
 type UseAppQueryOptions<
   TQueryFnData = unknown,
