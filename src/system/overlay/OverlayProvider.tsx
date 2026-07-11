@@ -11,7 +11,7 @@ import { AlertState, ConfirmState, PopupState } from "@/system/overlay/overlay.t
 type OverlayContextType = {
   alert: (message: string) => Promise<void>;
   confirm: (message: string) => Promise<boolean>;
-  openPopup: (content: React.ReactNode) => void;
+  openPopup: (title: string, content: React.ReactNode) => void;
   closePopup: () => void;
   showLoading: () => void;
   hideLoading: () => void;
@@ -64,8 +64,8 @@ export function OverlayProvider({ children }: PropsWithChildren) {
   };
 
   // popup 표출
-  const openPopup = useCallback((content: React.ReactNode) => {
-    setPopupState({ content });
+  const openPopup = useCallback((title: string, content: React.ReactNode) => {
+    setPopupState({ title, content });
   }, []);
 
   // popup 닫기
@@ -100,7 +100,7 @@ export function OverlayProvider({ children }: PropsWithChildren) {
       {children}
       {alertState && <Alert message={alertState.message} onClose={handleAlertClose} />}
       {confirmState && <Confirm message={confirmState.message} onConfirm={handleConfirm} onCancel={handleCancel} />}
-      {popupState && <Popup content={popupState.content} onClose={closePopup} /> }
+      {popupState && <Popup title={popupState.title} content={popupState.content} onClose={closePopup} /> }
       {isLoading && <Loading />}
     </OverlayContext.Provider>
   );

@@ -3,12 +3,10 @@
  * @param value 변환할 숫자 또는 문자열
  * @param length 채울 길이
  * @param fill 채울 문자
- * @example padStart(2, 2, "0") → "02"
+ * @example padStart(3, 2, "0") → "03"
  */
 export const padStart = (
-  value: number | string,
-  length: number,
-  fill: string
+  value: number | string, length: number, fill: string
 ): string => {
   return value.toString().padStart(length, fill);
 };
