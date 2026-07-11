@@ -1,0 +1,38 @@
+// 인증코드 발송 request
+export interface SendCodeRequest {
+  email: string;
+}
+
+// 인증코드 검증 request
+export interface VerifyCodeRequest {
+  email: string;
+  code: string;
+}
+
+// 회원가입 request
+export interface SignupRequest {
+  email: string;
+  password: string;
+  passwordConfirm: string;
+}
+
+// 구글 회원가입 request
+export interface GoogleSignupRequest {
+  accessToken: string;
+}
+
+// 로그인 request
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+// 인증 토큰 응답
+export interface AuthTokenResponse {
+  accessToken: string;
+}
+
+// 내 정보 응답
+export interface MeResponse extends AuthTokenResponse {
+  email: string;
+}
