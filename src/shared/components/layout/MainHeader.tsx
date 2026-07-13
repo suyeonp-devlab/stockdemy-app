@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import clsx from "clsx";
 import { useMeQuery, useLogoutMutation } from "@/features/auth/auth.query";
+import { useAuthStore } from "@/shared/store/auth.store";
 
 const navItems = [
   { label: "홈", href: "/" },
@@ -17,8 +18,9 @@ export default function MainHeader() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const { data: me, isLoading: isMeLoading } = useMeQuery();
+  const { isLoading: isMeLoading } = useMeQuery();
   const { mutateAsync: logout } = useLogoutMutation();
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
@@ -57,7 +59,7 @@ export default function MainHeader() {
         {/* 우상단 */}
         <div className="flex items-center gap-4 mt-1">
           {!isMeLoading && (
-            me ? (
+            isLoggedIn ? (
               <>
                 <Link href="/me" className="text-sm md:text-base font-medium text-gray-400 hover:text-white transition-colors">
                   마이페이지

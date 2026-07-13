@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "@/shared/components/button/Button";
 import FormField from "@/shared/components/form/FormField";
 import Input from "@/shared/components/form/Input";
-import { setAccessToken } from "@/shared/lib/axios";
+import { useAuthStore } from "@/shared/store/auth.store";
 import { useGoogleLoginMutation, useLoginMutation } from "@/features/auth/login/login.query";
 import { LOGIN_SCHEMA, LOGIN_SCHEMA_TYPE } from "@/features/auth/login/login.schema";
 
@@ -34,6 +34,7 @@ export default function LoginForm() {
 
   const { mutateAsync: login } = useLoginMutation();
   const { mutateAsync: googleLogin } = useGoogleLoginMutation();
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
 
   // 아이디 저장 처리 (로그인 성공/실패 여부와 무관하게 실행)
   const saveRememberedEmail = (email: string) => {

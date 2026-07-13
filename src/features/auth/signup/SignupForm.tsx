@@ -7,7 +7,7 @@ import { Check } from "lucide-react";
 import { useGoogleLogin } from "@react-oauth/google";
 import { FcGoogle } from "react-icons/fc";
 import { useAppMutation } from "@/shared/hooks/useAppMutation";
-import { setAccessToken } from "@/shared/lib/axios";
+import { useAuthStore } from "@/shared/store/auth.store";
 import Button from "@/shared/components/button/Button";
 import FormField from "@/shared/components/form/FormField";
 import Input from "@/shared/components/form/Input";
@@ -51,6 +51,8 @@ export default function SignupForm() {
 
   // 구글 회원가입 mutation
   const { mutateAsync: googleSignup } = useGoogleSignupMutation();
+
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
 
   // 인증코드 발송
   const handleSendCode = async () => {
