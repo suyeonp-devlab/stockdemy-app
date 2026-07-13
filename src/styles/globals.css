@@ -46,3 +46,17 @@ html, body {
   font-style: normal;
   font-display: swap;
 }
+
+/*스크롤바 관련*/
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-fade-mask {
+  mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
+}
