@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { overlayBridge } from "@/system/overlay/overlay-bridge";
 import { ApiRequestMeta, ApiResponse } from "@/shared/types/api.type";
+import { useAuthStore } from "@/shared/store/auth.store";
 
 declare module "axios" {
   interface AxiosRequestConfig { meta?: ApiRequestMeta; }
@@ -9,9 +10,6 @@ declare module "axios" {
     _retry?: boolean;
   }
 }
-
-// accessToken 메모리 보관
-let accessToken: string | null = null;
 
 // refresh 진행상태 (null이 아닌 경우 → refresh 진행중)
 let refreshPromise: Promise<void> | null = null;
@@ -32,6 +30,7 @@ axiosInstance.interceptors.request.use(
     }
 
     // token 세팅
+    const accessToken = useAuthStore.getState().accessToken;
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -73,10 +72,9 @@ axiosInstance.interceptors.response.use(
         return axiosInstance.request(originalRequest);
 
       } catch {
-        // refresh 실패 → 세션 만료로 간주 (로그인 페이지로 이동)
-        accessToken = null;
-        if (typeof window !== "undefined") window.location.href = "/login";
-        return new Promise<never>(() => {});
+        // refresh 실패 → 세션 만료로 간주
+        useAuthStore.getState().logout();
+        return Promise.reject(error);
       }
     }
 
@@ -119,10 +117,5 @@ const refreshAccessToken = async (): Promise<void> => {
   });
 
   if (!token) throw new Error("accessToken is null");
-  accessToken = token;
-};
-
-// 토큰 세팅
-export const setAccessToken = (token: string | null) => {
-  accessToken = token;
+  useAuthStore.getState().setAccessToken(token);
 };
