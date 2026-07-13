@@ -1,31 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import clsx from "clsx";
+import { useRouter } from "next/navigation";
 import { useMeQuery, useLogoutMutation } from "@/features/auth/auth.query";
 import { useAuthStore } from "@/shared/store/auth.store";
-
-const navItems = [
-  { label: "홈", href: "/" },
-  { label: "종목 검색", href: "/stocks" },
-  { label: "뉴스 & AI 분석", href: "/news" },
-  { label: "주식 일지", href: "/journals" },
-];
+import Navigation from "@/shared/components/layout/Navigation";
 
 export default function MainHeader() {
 
-  const pathname = usePathname();
   const router = useRouter();
 
+  // 로그인 정보
   const { isLoading: isMeLoading } = useMeQuery();
   const { mutateAsync: logout } = useLogoutMutation();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-
-  const isActive = (href: string) => {
-    if (href === "/") return pathname === "/";
-    return pathname.startsWith(href);
-  };
 
   // 로그아웃
   const handleLogout = async () => {
@@ -41,62 +29,31 @@ export default function MainHeader() {
             Stockdemy
           </Link>
           {/* 데스크탑 네비 */}
-          <nav className="hidden md:flex items-center gap-6 mt-1">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={clsx(
-                  "font-medium transition-colors",
-                  isActive(item.href) ? "text-white" : "text-gray-400 hover:text-white"
-                )}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
+          <Navigation className="hidden md:flex items-center gap-6 mt-1" />
         </div>
-        {/* 우상단 */}
+
         <div className="flex items-center gap-4 mt-1">
-          {!isMeLoading && (
-            isLoggedIn ? (
-              <>
-                <Link href="/me" className="text-sm md:text-base font-medium text-gray-400 hover:text-white transition-colors">
-                  마이페이지
-                </Link>
-                <button onClick={handleLogout} className="text-sm md:text-base font-medium text-blue-400 hover:text-blue-300 transition-colors">
-                  로그아웃
-                </button>
-              </>
-            ) : (
-              <>
-                <Link href="/login" className="text-sm md:text-base font-medium text-gray-400 hover:text-white transition-colors">
-                  로그인
-                </Link>
-                <Link href="/signup" className="text-sm md:text-base font-medium text-blue-400 hover:text-blue-300 transition-colors">
-                  회원가입
-                </Link>
-              </>
-            )
+          {!isMeLoading && isLoggedIn && (
+            <>
+              <Link href="/me" className={LINK_CLASS}>마이페이지</Link>
+              <button onClick={handleLogout} className={ACTION_CLASS}>로그아웃</button>
+            </>
+          )}
+          {!isMeLoading && !isLoggedIn && (
+            <>
+              <Link href="/login" className={LINK_CLASS}>로그인</Link>
+              <Link href="/signup" className={ACTION_CLASS}>회원가입</Link>
+            </>
           )}
         </div>
       </div>
 
       {/* 모바일 네비 */}
-      <div className="md:hidden border-t border-gray-800 px-6 py-3 flex items-center gap-6 overflow-x-auto">
-        {navItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={clsx(
-              "text-sm font-medium whitespace-nowrap transition-colors",
-              isActive(item.href) ? "text-white" : "text-gray-400"
-            )}
-          >
-            {item.label}
-          </Link>
-        ))}
-      </div>
+      <Navigation className="md:hidden border-t border-gray-800 px-6 py-3 flex items-center gap-6 overflow-x-auto scrollbar-hide scroll-fade-mask" />
     </header>
   );
 }
+
+// 네비게이션 링크 스타일
+const LINK_CLASS = "text-sm md:text-base font-medium text-gray-400 hover:text-white transition-colors";
+const ACTION_CLASS = "text-sm md:text-base font-medium text-blue-400 hover:text-blue-300 transition-colors";
