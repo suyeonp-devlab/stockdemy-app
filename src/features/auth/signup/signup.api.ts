@@ -1,24 +1,28 @@
-import { request } from "@/shared/lib/axios";
+import { request, requestRequired } from "@/shared/lib/axios";
 import {
   SignupRequest,
-  GoogleSignupRequest,
   SendCodeRequest,
   VerifyCodeRequest,
-  AuthTokenResponse
+  AuthTokenResponse,
+  GoogleAuthRequest
 } from "@/features/auth/auth.type";
 
 // 인증코드 발송
-export const sendCode = (data: SendCodeRequest) =>
-  request<void>({ method: "POST", url: "/api/auth/code/send", data });
+export const sendCode = async (data: SendCodeRequest) => {
+  await request<void>({ method: "POST", url: "/api/auth/code/send", data });
+}
 
-// 인증코드 확인
-export const verifyCode = (data: VerifyCodeRequest) =>
-  request<void>({ method: "POST", url: "/api/auth/code/verify", data });
+// 인증코드 검증
+export const verifyCode = async (data: VerifyCodeRequest) => {
+  await request<void>({ method: "POST", url: "/api/auth/code/verify", data });
+}
 
 // 회원가입
-export const signup = (data: SignupRequest) =>
-  request<AuthTokenResponse>({ method: "POST", url: "/api/auth/signup", data });
+export const signup = async (data: SignupRequest) => {
+  return requestRequired<AuthTokenResponse>({ method: "POST", url: "/api/auth/signup", data });
+}
 
 // 구글 회원가입
-export const googleSignup = (data: GoogleSignupRequest) =>
-  request<AuthTokenResponse>({ method: "POST", url: "/api/auth/google", data });
+export const googleSignup = async (data: GoogleAuthRequest) => {
+  return requestRequired<AuthTokenResponse>({ method: "POST", url: "/api/auth/google", data });
+}

@@ -7,7 +7,7 @@ import clsx from "clsx";
 import { ChevronDown, FileText, Search, Sparkles, Star } from "lucide-react";
 import { useDisclosuresQuery, useStockListQuery } from "@/features/stocks/stocks.query";
 import { useSectorSummariesQuery } from "@/features/dashboard/dashboard.query";
-import { useMeQuery } from "@/features/auth/auth.query";
+import { useGetMeQuery } from "@/features/auth/auth.query";
 import { AiSentiment } from "@/features/dashboard/dashboard.type";
 import { Market } from "@/features/stocks/stocks.type";
 import Input from "@/shared/components/form/Input";
@@ -65,7 +65,7 @@ export default function StockSearchPage() {
   const { data: stocks, isLoading } = useStockListQuery();
   const { data: disclosures, isLoading: isDisclosuresLoading } = useDisclosuresQuery();
   const { data: sectors, isLoading: isSectorsLoading } = useSectorSummariesQuery();
-  const { data: me } = useMeQuery();
+  const { data: me } = useGetMeQuery();
 
   const [filterMode, setFilterMode] = useState<FilterMode>(searchParams.get("tab") === "sector" ? "sector" : "market");
   const [searchQuery, setSearchQuery] = useState("");

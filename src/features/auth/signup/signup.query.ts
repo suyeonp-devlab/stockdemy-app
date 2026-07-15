@@ -6,7 +6,7 @@ export const useSendCodeMutation = () => {
   return useAppMutation({ mutationFn: sendCode });
 };
 
-// 인증코드 확인 mutation
+// 인증코드 검증 mutation
 export const useVerifyCodeMutation = () => {
   return useAppMutation({ mutationFn: verifyCode });
 };
