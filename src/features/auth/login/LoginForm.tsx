@@ -17,12 +17,16 @@ import { useGoogleLoginMutation, useLoginMutation } from "@/features/auth/login/
 import { LOGIN_SCHEMA, LOGIN_SCHEMA_TYPE } from "@/features/auth/login/login.schema";
 
 const REMEMBERED_EMAIL_KEY = "rememberedEmail";
+const LAST_LOGIN_METHOD_KEY = "lastLoginMethod";
+
+type LoginMethod = "email" | "google";
 
 export default function LoginForm() {
 
   const router = useRouter();
 
   const rememberedEmail = getLocalStorageItem(REMEMBERED_EMAIL_KEY);
+  const lastLoginMethod = getLocalStorageItem(LAST_LOGIN_METHOD_KEY) as LoginMethod | null;
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LOGIN_SCHEMA_TYPE>({
     resolver: zodResolver(LOGIN_SCHEMA),
@@ -48,6 +52,7 @@ export default function LoginForm() {
     saveRememberedEmail(data.email);
     const result = await login(data);
     setAccessToken(result.accessToken);
+    setLocalStorageItem(LAST_LOGIN_METHOD_KEY, "email");
     router.replace("/");
   };
 
@@ -56,6 +61,7 @@ export default function LoginForm() {
     onSuccess: async (tokenResponse) => {
       const result = await googleLogin({ accessToken: tokenResponse.access_token });
       setAccessToken(result.accessToken);
+      setLocalStorageItem(LAST_LOGIN_METHOD_KEY, "google");
       router.replace("/");
     },
   });
@@ -69,16 +75,23 @@ export default function LoginForm() {
       <form onSubmit={handleSubmit(handleLogin)} noValidate>
         <div className="bg-gray-900 rounded-2xl border border-gray-800 p-8">
           {/* Google 로그인 */}
-          <Button
-            type="button"
-            onClick={() => handleGoogleLogin()}
-            width="full"
-            className="flex items-center justify-center gap-3 border font-medium mb-6 py-3"
-            style={{ backgroundColor: "#131314", borderColor: "#8E918F", color: "#E3E3E3" }}
-          >
-            <FcGoogle className="w-5 h-5 shrink-0" />
-            Google로 로그인
-          </Button>
+          <div className="relative mb-6">
+            <Button
+              type="button"
+              onClick={() => handleGoogleLogin()}
+              width="full"
+              className="flex items-center justify-center gap-3 border font-medium py-3"
+              style={{ backgroundColor: "#131314", borderColor: "#8E918F", color: "#E3E3E3" }}
+            >
+              <FcGoogle className="w-5 h-5 shrink-0" />
+              Google로 로그인
+            </Button>
+            {lastLoginMethod === "google" && (
+              <span className="absolute -top-2 -right-2 px-3 py-1 bg-blue-500 text-white text-xs font-semibold rounded-xl shadow">
+                최근 로그인
+              </span>
+            )}
+          </div>
 
           {/* 구분선 */}
           <div className="flex items-center gap-3 mb-6">
