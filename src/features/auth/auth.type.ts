@@ -16,8 +16,8 @@ export interface SignupRequest {
   passwordConfirm: string;
 }
 
-// 구글 회원가입 request
-export interface GoogleSignupRequest {
+// 구글 회원가입 및 로그인 request
+export interface GoogleAuthRequest {
   accessToken: string;
 }
 
@@ -27,12 +27,19 @@ export interface LoginRequest {
   password: string;
 }
 
-// 인증 토큰 응답
+// 비밀번호 재설정 request
+export interface ResetPasswordRequest {
+  email: string;
+  password: string;
+  passwordConfirm: string;
+}
+
+// 인증 토큰 response
 export interface AuthTokenResponse {
   accessToken: string;
 }
 
-// 내 정보 응답
-export interface MeResponse extends AuthTokenResponse {
+// 내 정보 response
+export interface MeResponse {
   email: string;
 }

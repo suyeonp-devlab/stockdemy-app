@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useMeQuery, useLogoutMutation } from "@/features/auth/auth.query";
+import { useGetMeQuery, useLogoutMutation } from "@/features/auth/auth.query";
 import Button from "@/shared/components/button/Button";
 import ProtectedRoute from "@/system/auth/ProtectedRoute";
 
@@ -10,7 +10,7 @@ export default function MePage() {
 
   const router = useRouter();
 
-  const { data: me } = useMeQuery();
+  const { data: me } = useGetMeQuery();
 
   const { mutateAsync: logout } = useLogoutMutation();
 

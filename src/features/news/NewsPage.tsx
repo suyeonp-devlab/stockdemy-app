@@ -5,7 +5,7 @@ import Link from "next/link";
 import clsx from "clsx";
 import { Search } from "lucide-react";
 import { useNewsListQuery } from "@/features/news/news.query";
-import { useMeQuery } from "@/features/auth/auth.query";
+import { useGetMeQuery } from "@/features/auth/auth.query";
 import { NewsCategory } from "@/features/news/news.type";
 import { AiSentiment } from "@/features/dashboard/dashboard.type";
 import Input from "@/shared/components/form/Input";
@@ -33,7 +33,7 @@ const PAGE_SIZE = 4;
 export default function NewsPage() {
 
   const { data: news, isLoading } = useNewsListQuery();
-  const { data: me } = useMeQuery();
+  const { data: me } = useGetMeQuery();
 
   const [category, setCategory] = useState<CategoryFilter>("all");
   const [searchQuery, setSearchQuery] = useState("");

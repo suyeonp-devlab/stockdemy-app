@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import SignupForm from "@/features/auth/signup/SignupForm";
+import ResetPasswordForm from "@/features/auth/reset-password/ResetPasswordForm";
 
-export const metadata: Metadata = { title: "회원가입" };
+export const metadata: Metadata = { title: "비밀번호 재설정" };
 
-export default function SignupPage() {
+export default function ResetPasswordPage() {
 
   return (
     <div className="w-full max-w-sm md:max-w-4xl md:grid md:grid-cols-2 md:gap-16 md:items-center">
@@ -11,10 +11,13 @@ export default function SignupPage() {
       <div className="hidden md:block">
         <h1 className="text-5xl font-black text-gray-100 leading-tight mb-4">
           <span className="block opacity-0 animate-fadein" style={{ animationDelay: "0s" }}>
-            지금 바로
+            주식,
           </span>
           <span className="block opacity-0 animate-fadein" style={{ animationDelay: "0.3s" }}>
-            시작해보세요.
+            이제 쉽게
+          </span>
+          <span className="block opacity-0 animate-fadein" style={{ animationDelay: "0.6s" }}>
+            공부하세요.
           </span>
         </h1>
         <p className="text-gray-500 text-lg leading-relaxed opacity-0 animate-fadein" style={{ animationDelay: "0.8s" }}>
@@ -22,7 +25,7 @@ export default function SignupPage() {
         </p>
       </div>
 
-      <SignupForm />
+      <ResetPasswordForm />
     </div>
   );
 }

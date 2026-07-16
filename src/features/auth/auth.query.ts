@@ -1,18 +1,20 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { useAppQuery } from "@/shared/hooks/useAppQuery";
 import { useAppMutation } from "@/shared/hooks/useAppMutation";
 import { getMe, logout } from "@/features/auth/auth.api";
 import { useAuthStore } from "@/shared/store/auth.store";
+import queryClient from "@/shared/lib/query-client";
 
-// 내 정보 조회 (로그인 상태 판별용)
-export const useMeQuery = () => {
+const AUTH_QUERY_KEYS = {
+  all: () => ["auth"] as const,
+  me: () => [...AUTH_QUERY_KEYS.all(), "me"] as const,
+};
+
+// 내 정보 조회 query
+export const useGetMeQuery = () => {
+
   return useAppQuery({
-    queryKey: ["me"],
-    queryFn: async () => {
-      const me = await getMe();
-      useAuthStore.getState().setAccessToken(me.accessToken);
-      return me;
-    },
+    queryKey: AUTH_QUERY_KEYS.me(),
+    queryFn: getMe,
     retry: false,
     loading: false,
   });
@@ -21,13 +23,11 @@ export const useMeQuery = () => {
 // 로그아웃 mutation
 export const useLogoutMutation = () => {
 
-  const queryClient = useQueryClient();
-
   return useAppMutation({
-    mutationFn: async () => {
-      await logout();
+    mutationFn: logout,
+    onSuccess: () => {
       useAuthStore.getState().logout();
-      queryClient.removeQueries({ queryKey: ["me"] });
+      queryClient.removeQueries({ queryKey: AUTH_QUERY_KEYS.me() });
     },
   });
 };

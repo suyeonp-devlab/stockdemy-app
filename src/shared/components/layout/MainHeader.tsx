@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMeQuery, useLogoutMutation } from "@/features/auth/auth.query";
+import { useGetMeQuery, useLogoutMutation } from "@/features/auth/auth.query";
 import { useAuthStore } from "@/shared/store/auth.store";
 import Navigation from "@/shared/components/layout/Navigation";
 
@@ -11,7 +11,7 @@ export default function MainHeader() {
   const router = useRouter();
 
   // 로그인 정보
-  const { isLoading: isMeLoading } = useMeQuery();
+  const { isLoading: isMeLoading } = useGetMeQuery();
   const { mutateAsync: logout } = useLogoutMutation();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 

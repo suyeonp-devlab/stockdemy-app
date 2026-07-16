@@ -1,35 +1,30 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Check } from "lucide-react";
-import { useGoogleLogin } from "@react-oauth/google";
-import { FcGoogle } from "react-icons/fc";
-import { useAuthStore } from "@/shared/store/auth.store";
 import Button from "@/shared/components/button/Button";
 import FormField from "@/shared/components/form/FormField";
 import Input from "@/shared/components/form/Input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  useGoogleSignupMutation,
-  useSendSignupCodeMutation,
-  useSignupMutation,
-  useVerifySignupCodeMutation
-} from "@/features/auth/signup/signup.query";
-import { SIGNUP_SCHEMA, SIGNUP_SCHEMA_TYPE } from "@/features/auth/signup/signup.schema";
+  useSendPasswordResetCodeMutation,
+  useVerifyPasswordResetCodeMutation,
+  useResetPasswordMutation,
+} from "@/features/auth/reset-password/reset-password.query";
+import { RESET_PASSWORD_SCHEMA, RESET_PASSWORD_SCHEMA_TYPE } from "@/features/auth/reset-password/reset-password.schema";
 import { useOverlay } from "@/system/overlay/useOverlay";
 
 type EmailStep = "input" | "sent" | "verified";
 
-export default function SignupForm() {
+export default function ResetPasswordForm() {
 
   const router = useRouter();
   const { alert } = useOverlay();
 
-  const { register, handleSubmit, getValues, trigger, formState: { errors, isSubmitting } } = useForm<SIGNUP_SCHEMA_TYPE>({
-    resolver: zodResolver(SIGNUP_SCHEMA),
+  const { register, handleSubmit, getValues, trigger, formState: { errors, isSubmitting } } = useForm<RESET_PASSWORD_SCHEMA_TYPE>({
+    resolver: zodResolver(RESET_PASSWORD_SCHEMA),
     mode: "onSubmit",
     defaultValues: { email: "", password: "", passwordConfirm: "", code: "" },
   });
@@ -37,11 +32,9 @@ export default function SignupForm() {
   // 이메일 인증 단계
   const [emailStep, setEmailStep] = useState<EmailStep>("input");
 
-  const { mutateAsync: sendCode, isPending: isSending } = useSendSignupCodeMutation();
-  const { mutateAsync: verifyCode, isPending: isVerifying } = useVerifySignupCodeMutation();
-  const { mutateAsync: signup } = useSignupMutation();
-  const { mutateAsync: googleSignup } = useGoogleSignupMutation();
-  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+  const { mutateAsync: sendCode, isPending: isSending } = useSendPasswordResetCodeMutation();
+  const { mutateAsync: verifyCode, isPending: isVerifying } = useVerifyPasswordResetCodeMutation();
+  const { mutateAsync: resetPassword } = useResetPasswordMutation();
 
   // 인증코드 발송
   const handleSendCode = async () => {
@@ -60,55 +53,24 @@ export default function SignupForm() {
     if (!isValid) return;
 
     await verifyCode({ email: getValues("email"), code: getValues("code") });
-    setEmailStep("verified")
+    setEmailStep("verified");
   };
 
-  // 회원가입
-  const handleSignup = async (data: SIGNUP_SCHEMA_TYPE) => {
-    const result = await signup(data);
-    await alert("회원가입이 완료되었습니다.");
-    setAccessToken(result.accessToken);
-    router.replace("/");
+  // 비밀번호 재설정
+  const handleResetPassword = async (data: RESET_PASSWORD_SCHEMA_TYPE) => {
+    await resetPassword(data);
+    await alert("비밀번호가 변경되었습니다.\n변경된 비밀번호로 로그인 후 이용바랍니다.");
+    router.replace("/login");
   };
-
-  // 구글 회원가입
-  const handleGoogleSignup = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-      const result = await googleSignup({ accessToken: tokenResponse.access_token });
-      await alert("회원가입이 완료되었습니다.");
-      setAccessToken(result.accessToken);
-      router.replace("/");
-    },
-  });
 
   return (
     <div className="w-full">
       <div className="text-center md:text-left mb-4">
-        <h2 className="text-2xl font-bold text-gray-100">회원가입</h2>
+        <h2 className="text-2xl font-bold text-gray-100">비밀번호 재설정</h2>
       </div>
 
-      <form onSubmit={handleSubmit(handleSignup)} noValidate>
+      <form onSubmit={handleSubmit(handleResetPassword)} noValidate>
         <div className="bg-gray-900 rounded-2xl border border-gray-800 p-8">
-          {/* Google 회원가입 */}
-          <Button
-            type="button"
-            onClick={() => handleGoogleSignup()}
-            width="full"
-            className="flex items-center justify-center gap-3 border font-medium mb-6 py-3"
-            style={{ backgroundColor: "#131314", borderColor: "#8E918F", color: "#E3E3E3" }}
-          >
-            <FcGoogle className="w-5 h-5 shrink-0" />
-            Google로 회원가입
-          </Button>
-
-          {/* 구분선 */}
-          <div className="flex items-center gap-3 mb-6">
-            <div className="flex-1 h-px bg-gray-800" />
-            <span className="text-xs text-gray-600">또는</span>
-            <div className="flex-1 h-px bg-gray-800" />
-          </div>
-
-          {/* 기본 회원가입 */}
           <FormField
             label="이메일"
             error={errors.email?.message}
@@ -172,39 +134,34 @@ export default function SignupForm() {
             </FormField>
           )}
 
-          <FormField label="비밀번호" error={errors.password?.message} className="mb-4">
-            <Input
-              type="password"
-              placeholder="비밀번호를 입력하세요"
-              error={!!errors.password}
-              {...register("password")}
-            />
-          </FormField>
+          {/* 인증 완료 후 비밀번호 변경 */}
+          {emailStep === "verified" && (
+            <>
+              <FormField label="새 비밀번호" error={errors.password?.message} className="mb-4">
+                <Input
+                  type="password"
+                  placeholder="비밀번호를 입력하세요"
+                  error={!!errors.password}
+                  {...register("password")}
+                />
+              </FormField>
 
-          <FormField label="비밀번호 확인" error={errors.passwordConfirm?.message} className="mb-8">
-            <Input
-              type="password"
-              placeholder="비밀번호를 다시 입력하세요"
-              error={!!errors.passwordConfirm}
-              {...register("passwordConfirm")}
-            />
-          </FormField>
+              <FormField label="새 비밀번호 확인" error={errors.passwordConfirm?.message} className="mb-8">
+                <Input
+                  type="password"
+                  placeholder="비밀번호를 다시 입력하세요"
+                  error={!!errors.passwordConfirm}
+                  {...register("passwordConfirm")}
+                />
+              </FormField>
 
-          <Button type="submit" disabled={isSubmitting || emailStep !== "verified"} variant="primary" width="full">
-            가입하기
-          </Button>
+              <Button type="submit" disabled={isSubmitting} variant="primary" width="full">
+                비밀번호 변경하기
+              </Button>
+            </>
+          )}
         </div>
       </form>
-
-      <div className="flex items-center justify-center gap-2.5 mt-6 text-sm">
-        <p className="text-gray-500">
-          이미 계정이 있으신가요?
-        </p>
-        <Link href="/login" className="font-semibold text-blue-400 hover:underline">
-          로그인
-        </Link>
-      </div>
     </div>
   );
 }
-
