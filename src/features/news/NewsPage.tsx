@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import { useGetNewsListQuery } from "@/features/news/news.query";
 import { useGetCommonCodesQuery } from "@/shared/common-code/common-code.query";
@@ -31,6 +31,11 @@ export default function NewsPage() {
   const [searchQuery, setSearchQuery] = useState<NewsRequest>({
     category: "", stockName: "", favorite: false, page: 1, pageSize: PAGE_SIZE
   });
+
+  // 조회 조건 변경 → 스크롤 최상단 이동
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [searchQuery]);
 
   // 종목명 검색어
   const [stockNameInput, setStockNameInput] = useState("");
