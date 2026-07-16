@@ -120,9 +120,10 @@ export default function LoginForm() {
       </form>
 
       <div className="flex items-center justify-center gap-2.5 mt-6 text-sm">
-        <p className="text-gray-500">
-          아직 계정이 없으신가요?
-        </p>
+        <Link href="/reset-password" className="font-semibold text-gray-400 hover:underline">
+          비밀번호 찾기
+        </Link>
+        <span className="w-px h-3 bg-gray-500" />
         <Link href="/signup" className="font-semibold text-blue-400 hover:underline">
           회원가입
         </Link>

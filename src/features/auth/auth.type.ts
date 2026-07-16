@@ -27,6 +27,13 @@ export interface LoginRequest {
   password: string;
 }
 
+// 비밀번호 재설정 request
+export interface ResetPasswordRequest {
+  email: string;
+  password: string;
+  passwordConfirm: string;
+}
+
 // 인증 토큰 response
 export interface AuthTokenResponse {
   accessToken: string;
