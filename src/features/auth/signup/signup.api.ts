@@ -8,13 +8,13 @@ import {
 } from "@/features/auth/auth.type";
 
 // 인증코드 발송
-export const sendCode = async (data: SendCodeRequest) => {
-  await request<void>({ method: "POST", url: "/api/auth/code/send", data });
+export const sendSignupCode = async (data: SendCodeRequest) => {
+  await request<void>({ method: "POST", url: "/api/auth/signup/code/send", data });
 }
 
 // 인증코드 검증
-export const verifyCode = async (data: VerifyCodeRequest) => {
-  await request<void>({ method: "POST", url: "/api/auth/code/verify", data });
+export const verifySignupCode = async (data: VerifyCodeRequest) => {
+  await request<void>({ method: "POST", url: "/api/auth/signup/code/verify", data });
 }
 
 // 회원가입
@@ -24,5 +24,5 @@ export const signup = async (data: SignupRequest) => {
 
 // 구글 회원가입
 export const googleSignup = async (data: GoogleAuthRequest) => {
-  return requestRequired<AuthTokenResponse>({ method: "POST", url: "/api/auth/google", data });
+  return requestRequired<AuthTokenResponse>({ method: "POST", url: "/api/auth/signup/google", data });
 }

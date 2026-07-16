@@ -14,9 +14,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   useGoogleSignupMutation,
-  useSendCodeMutation,
+  useSendSignupCodeMutation,
   useSignupMutation,
-  useVerifyCodeMutation
+  useVerifySignupCodeMutation
 } from "@/features/auth/signup/signup.query";
 import { SIGNUP_SCHEMA, SIGNUP_SCHEMA_TYPE } from "@/features/auth/signup/signup.schema";
 import { useOverlay } from "@/system/overlay/useOverlay";
@@ -37,8 +37,8 @@ export default function SignupForm() {
   // 이메일 인증 단계
   const [emailStep, setEmailStep] = useState<EmailStep>("input");
 
-  const { mutateAsync: sendCode, isPending: isSending } = useSendCodeMutation();
-  const { mutateAsync: verifyCode, isPending: isVerifying } = useVerifyCodeMutation();
+  const { mutateAsync: sendCode, isPending: isSending } = useSendSignupCodeMutation();
+  const { mutateAsync: verifyCode, isPending: isVerifying } = useVerifySignupCodeMutation();
   const { mutateAsync: signup } = useSignupMutation();
   const { mutateAsync: googleSignup } = useGoogleSignupMutation();
   const setAccessToken = useAuthStore((state) => state.setAccessToken);

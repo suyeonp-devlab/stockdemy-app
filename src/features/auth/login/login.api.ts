@@ -8,5 +8,5 @@ export const login = async (data: LoginRequest) => {
 
 // 구글 로그인
 export const googleLogin = async (data: GoogleAuthRequest) => {
-  return requestRequired<AuthTokenResponse>({ method: "POST", url: "/api/auth/google", data });
+  return requestRequired<AuthTokenResponse>({ method: "POST", url: "/api/auth/login/google", data });
 }
