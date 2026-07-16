@@ -16,7 +16,7 @@ html, body {
 }
 
 @media (min-width: 768px) {
-  body { min-width: 1024px; }
+  body { min-width: 1300px; }
 }
 
 @font-face {
