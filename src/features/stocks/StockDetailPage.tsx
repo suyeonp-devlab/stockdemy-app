@@ -4,7 +4,7 @@ import Link from "next/link";
 import clsx from "clsx";
 import { ChevronLeft, Sparkles } from "lucide-react";
 import { useStockDetailQuery } from "@/features/stocks/stocks.query";
-import { useNewsListQuery } from "@/features/news/news.query";
+import { useGetNewsListQuery } from "@/features/news/news.query";
 import { useDisclosuresQuery } from "@/features/stocks/stocks.query";
 import { Market, StockDetail, Disclosure } from "@/features/stocks/stocks.type";
 import { AiSentiment, NewsItem } from "@/features/dashboard/dashboard.type";
@@ -46,7 +46,9 @@ const getStockComment = (detail: StockDetail) => {
 export default function StockDetailPage({ code }: { code: string }) {
 
   const { data: detail, isLoading, isError } = useStockDetailQuery(code);
-  const { data: news } = useNewsListQuery();
+  const { data: newsResponse } = useGetNewsListQuery(
+    detail ? { category: "", stockName: detail.name, favorite: false, page: 1, pageSize: 5 } : null,
+  );
   const { data: disclosures } = useDisclosuresQuery();
 
   if (isLoading) {
@@ -102,7 +104,7 @@ export default function StockDetailPage({ code }: { code: string }) {
     );
   }
 
-  const relatedNews = news?.filter((item) => item.stockName === detail.name) ?? [];
+  const relatedNews = newsResponse?.items ?? [];
   const relatedDisclosures = disclosures?.filter((item) => item.corpName === detail.name) ?? [];
 
   return (

@@ -1,11 +1,11 @@
 "use client";
 
-import { useSentimentSummaryQuery } from "@/features/news/news.query";
+import { useGetSentimentSummaryQuery } from "@/features/news/news.query";
 import Skeleton from "@/shared/components/skeleton/Skeleton";
 
 export default function SentimentCard() {
 
-  const { data: summary, isLoading } = useSentimentSummaryQuery();
+  const { data: summary, isLoading } = useGetSentimentSummaryQuery();
 
   if (isLoading) {
     return (

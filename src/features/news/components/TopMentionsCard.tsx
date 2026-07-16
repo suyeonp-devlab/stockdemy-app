@@ -1,6 +1,6 @@
 "use client";
 
-import { useTopMentionsQuery } from "@/features/news/news.query";
+import { useGetTopMentionsQuery } from "@/features/news/news.query";
 import Skeleton from "@/shared/components/skeleton/Skeleton";
 
 // 로고 배경색 팔레트
@@ -17,7 +17,7 @@ const MOBILE_MAX_COUNT = 4;
 
 export default function TopMentionsCard() {
 
-  const { data: mentions, isLoading } = useTopMentionsQuery();
+  const { data: mentions, isLoading } = useGetTopMentionsQuery();
 
   if (isLoading) {
     return (
