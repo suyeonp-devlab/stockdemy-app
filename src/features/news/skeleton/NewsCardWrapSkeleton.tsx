@@ -12,12 +12,13 @@ export default function NewsCardWrapSkeleton() {
             <Skeleton className="h-3 w-24" />
             <Skeleton className="h-5 w-12 rounded-md ml-auto" />
           </div>
-          <Skeleton className="h-5 w-full mb-2" />
+          {/* 제목 */}
+          <Skeleton className="h-5 md:h-7 w-full mb-2" />
           {/* AI 요약 */}
-          <Skeleton className="h-3 w-12 mb-1.5" />
+          <Skeleton className="h-4 w-16 mb-1" />
           {/* 요약 2줄 */}
-          <Skeleton className="h-3 w-full mb-1" />
-          <Skeleton className="h-3 w-2/3" />
+          <Skeleton className="h-4 md:h-5 w-full mb-2" />
+          <Skeleton className="h-4 md:h-5 w-2/3 mb-2" />
         </div>
       ))}
     </div>
