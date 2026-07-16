@@ -29,7 +29,7 @@ export default function FilterTabs({
           key={option.value}
           onClick={() => onChange(option.value)}
           className={clsx(
-            "px-4 py-2 text-sm font-medium rounded-xl whitespace-nowrap transition-colors flex items-center gap-1",
+            "px-4 py-2 text-sm font-medium rounded-md whitespace-nowrap transition-colors flex items-center gap-1",
             value === option.value ? "bg-blue-500 text-white" : "bg-gray-900 text-gray-400 border border-gray-800 hover:text-white"
           )}
         >

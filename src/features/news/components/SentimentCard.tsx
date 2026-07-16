@@ -1,23 +1,16 @@
 "use client";
 
 import { useGetSentimentSummaryQuery } from "@/features/news/news.query";
-import Skeleton from "@/shared/components/skeleton/Skeleton";
+import SentimentCardSkeleton from "@/features/news/skeleton/SentimentCardSkeleton";
 
 export default function SentimentCard() {
 
   const { data: summary, isLoading } = useGetSentimentSummaryQuery();
 
-  if (isLoading) {
-    return (
-      <div className="bg-gray-900 rounded-2xl border border-gray-800 p-5">
-        <Skeleton className="h-4 w-28 mb-4" />
-        <div className="space-y-3">
-          {Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-3 w-full" />)}
-        </div>
-      </div>
-    );
-  }
+  // 조회중
+  if (isLoading) return <SentimentCardSkeleton />
 
+  // 미존재
   if (!summary) return null;
 
   const bars = [
@@ -27,19 +20,21 @@ export default function SentimentCard() {
   ];
 
   return (
-    <div className="bg-gray-900 rounded-2xl border border-gray-800 p-5">
-      <h3 className="text-sm font-semibold text-gray-100 mb-4">오늘의 시장 감성</h3>
+    <div className="bg-gray-900 rounded-md border border-gray-800 p-5">
+      <h3 className="text-sm font-semibold text-gray-100 mb-4">오늘의 시장 평가</h3>
+
       <div className="space-y-3">
         {bars.map((bar) => (
           <div key={bar.label} className="flex items-center gap-2">
-            <span className="text-xs text-gray-400 w-8 flex-shrink-0">{bar.label}</span>
-            <div className="flex-1 min-w-0 h-1.5 bg-gray-800 rounded-full overflow-hidden">
+            <span className="text-xs text-gray-300 w-8 flex-shrink-0">{bar.label}</span>
+            <div className="flex-1 min-w-0 h-2 bg-gray-800 rounded-full overflow-hidden">
               <div className={`h-full ${bar.colorClass} rounded-full`} style={{ width: `${bar.value}%` }} />
             </div>
             <span className={`text-xs font-medium w-9 flex-shrink-0 text-right ${bar.textClass}`}>{bar.value}%</span>
           </div>
         ))}
       </div>
+
       <p className="text-xs text-gray-600 mt-4">오늘 수집된 뉴스 {summary.totalCount}건 기준</p>
     </div>
   );

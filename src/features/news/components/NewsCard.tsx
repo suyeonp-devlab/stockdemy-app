@@ -1,32 +1,37 @@
 import clsx from "clsx";
 import { News } from "@/features/news/news.type";
 
-const sentimentBadgeStyle: Record<string, string> = {
-  POSITIVE: "bg-red-950 text-red-300",
-  NEUTRAL: "bg-gray-800 text-gray-400",
-  NEGATIVE: "bg-sky-950 text-sky-300",
-};
+interface NewsCardProps {
+  news: News;
+}
 
-// 뉴스 목록 항목
-export default function NewsCard({ item }: { item: News }) {
+export default function NewsCard({ news }: NewsCardProps) {
+
   return (
-    <div className="py-5 px-3 -mx-3 hover:bg-gray-900/50 rounded-xl transition-colors cursor-pointer">
-      <div className="flex items-center gap-2 mb-2">
-        <div className="w-6 h-6 rounded bg-gray-700 flex items-center justify-center text-xs font-bold text-gray-300 flex-shrink-0">
-          {item.stockName.slice(0, 1)}
+    <div className="py-5 px-3 -mx-3 hover:bg-gray-900/50 transition-colors cursor-pointer">
+      <div className="flex items-center gap-2 mb-3 md:mb-2">
+        <div className="w-8 h-6 rounded bg-gray-700 flex items-center justify-center text-xs font-bold text-gray-300 flex-shrink-0">
+          {news.stockName.slice(0, 2)}
         </div>
-        <span className="text-xs text-gray-400">{item.stockName}</span>
-        <span className="text-xs text-gray-600">·</span>
-        <span className="text-xs text-gray-600">{item.publishedAt}</span>
-        <span className={clsx("px-2 py-0.5 text-xs font-medium rounded-md ml-auto", sentimentBadgeStyle[item.sentiment])}>
-          {item.sentimentNm}
+        <span className="text-sm text-gray-400">{news.stockName}</span>
+        <span className="text-sm text-gray-600">·</span>
+        <span className="text-sm text-gray-600">{news.publishedAt}</span>
+        <span className={clsx("px-2 py-0.5 text-sm font-medium rounded-md ml-auto", sentimentStyles[news.sentiment])}>
+          {news.sentimentNm}
         </span>
       </div>
-      <h3 className="text-sm font-semibold text-gray-100 mb-2 leading-relaxed">{item.title}</h3>
+      <h3 className="text-sm md:text-base font-semibold text-gray-100 mb-2 leading-relaxed truncate">{news.title}</h3>
       <div className="mb-2">
-        <div className="text-xs text-blue-400 font-medium mb-1">AI 요약</div>
-        <p className="text-xs text-gray-400 leading-relaxed line-clamp-2">{item.summary}</p>
+        <div className="text-xs md:text-sm text-blue-400 font-medium mb-1">AI 요약</div>
+        <p className="text-xs md:text-sm text-gray-400 leading-relaxed line-clamp-2">{news.summary}</p>
       </div>
     </div>
   );
 }
+
+// AI 평가에 따른 스타일
+const sentimentStyles: Record<string, string> = {
+  POSITIVE: "bg-red-900 text-red-200",
+  NEUTRAL: "bg-gray-700 text-gray-300",
+  NEGATIVE: "bg-sky-900 text-sky-200",
+};
