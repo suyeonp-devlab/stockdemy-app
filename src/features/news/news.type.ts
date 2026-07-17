@@ -1,20 +1,51 @@
-import { AiSentiment } from "@/features/dashboard/dashboard.type";
+// 뉴스 request
+export interface NewsRequest {
+  category: string;
+  stockName: string;
+  favorite: boolean;
+  page: number;
+  pageSize: number;
+}
 
-// 뉴스 카테고리
-export type NewsCategory = "국내" | "해외";
+// 뉴스 response
+export interface NewsResponse {
+  totalCount: number;
+  totalPages: number;
+  items: News[];
+}
 
-// 뉴스 목록 항목
-export interface NewsListItem {
-  id: string;
+// 뉴스 항목
+export interface News {
+  id: number;
+  stockCode: string;
   stockName: string;
   title: string;
   summary: string;
   publishedAt: string;
-  category: NewsCategory;
-  sentiment: AiSentiment;
+  category: string;
+  categoryNm: string;
+  sentiment: string;
+  sentimentNm: string;
+  sourceUrl: string;
+  sourceName: string;
 }
 
-// 오늘의 시장 감성 비율
+// 뉴스 상세
+export interface NewsDetail extends News {
+  confidence: number;
+  reasoning: string;
+  relatedStocks: NewsRelatedStock[];
+}
+
+// 뉴스 관련 종목 영향
+export interface NewsRelatedStock {
+  stockCode: string;
+  stockName: string;
+  impact: string;
+  impactNm: string;
+}
+
+// 오늘의 시장 평가
 export interface SentimentSummary {
   positive: number;
   neutral: number;
