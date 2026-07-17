@@ -12,7 +12,8 @@ import SentimentCard from "@/features/news/components/SentimentCard";
 import TopMentionsCard from "@/features/news/components/TopMentionsCard";
 import { NewsRequest } from "@/features/news/news.type";
 import { useOverlay } from "@/system/overlay/useOverlay";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { buildLoginUrl } from "@/features/auth/auth.lib";
 import IconButton from "@/shared/components/button/IconButton";
 import NewsCardWrap from "@/features/news/components/NewsCardWrap";
 import CategoryFilterSkeleton from "@/features/news/skeleton/CategoryFilterSkeleton";
@@ -23,6 +24,7 @@ const FAVORITE_TAB = "favorite";
 export default function NewsPage() {
 
   const router = useRouter();
+  const pathname = usePathname();
   const { confirm, openPopup } = useOverlay();
 
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -68,7 +70,7 @@ export default function NewsPage() {
     // [내 관심종목]은 로그인 사용자만 이용 가능
     if (tabValue === FAVORITE_TAB && !isLoggedIn) {
       const confirmed = await confirm("로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하시겠습니까?");
-      if (confirmed) router.push("/login");
+      if (confirmed) router.push(buildLoginUrl(pathname));
       return;
     }
 

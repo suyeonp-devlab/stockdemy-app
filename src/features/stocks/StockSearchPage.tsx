@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import clsx from "clsx";
 import { ChevronDown, FileText, Search, Sparkles, Star } from "lucide-react";
 import { useDisclosuresQuery, useStockListQuery } from "@/features/stocks/stocks.query";
@@ -12,6 +12,7 @@ import { AiSentiment } from "@/features/dashboard/dashboard.type";
 import { Market } from "@/features/stocks/stocks.type";
 import Input from "@/shared/components/form/Input";
 import Skeleton from "@/shared/components/skeleton/Skeleton";
+import { buildLoginUrl } from "@/features/auth/auth.lib";
 
 const MAX_WATCH_COUNT = 10;
 const DEFAULT_VIEW_COUNT = 5;
@@ -60,6 +61,7 @@ const logoColors = [
 export default function StockSearchPage() {
 
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const { data: stocks, isLoading } = useStockListQuery();
@@ -222,7 +224,10 @@ export default function StockSearchPage() {
             <div className="bg-gray-900 rounded-2xl border border-gray-800 p-10 text-center">
               <p className="text-sm font-medium text-gray-400 mb-1">관심 종목을 등록하고 모아볼 수 있어요.</p>
               <p className="text-xs text-gray-600 mb-4">로그인 후 관심 종목을 등록해보세요.</p>
-              <Link href="/login" className="inline-block px-4 py-2 bg-blue-500 text-white text-xs font-semibold rounded-lg hover:bg-blue-600 transition-colors">
+              <Link
+                href={buildLoginUrl(searchParams.toString() ? `${pathname}?${searchParams.toString()}` : pathname)}
+                className="inline-block px-4 py-2 bg-blue-500 text-white text-xs font-semibold rounded-lg hover:bg-blue-600 transition-colors"
+              >
                 로그인하기
               </Link>
             </div>

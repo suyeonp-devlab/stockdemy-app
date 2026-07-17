@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useGoogleLogin } from "@react-oauth/google";
 import { FcGoogle } from "react-icons/fc";
 import { useForm } from "react-hook-form";
@@ -13,6 +13,7 @@ import FormField from "@/shared/components/form/FormField";
 import Input from "@/shared/components/form/Input";
 import { useAuthStore } from "@/shared/store/auth.store";
 import { getLocalStorageItem, setLocalStorageItem, removeLocalStorageItem } from "@/shared/utils/storage";
+import { isSafeReturnUrl } from "@/features/auth/auth.lib";
 import { useGoogleLoginMutation, useLoginMutation } from "@/features/auth/login/login.query";
 import { LOGIN_SCHEMA, LOGIN_SCHEMA_TYPE } from "@/features/auth/login/login.schema";
 
@@ -24,6 +25,10 @@ type LoginMethod = "email" | "google";
 export default function LoginForm() {
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const returnUrl = searchParams.get("returnUrl");
+  const redirectTo = isSafeReturnUrl(returnUrl) ? returnUrl : "/";
 
   const rememberedEmail = getLocalStorageItem(REMEMBERED_EMAIL_KEY);
   const lastLoginMethod = getLocalStorageItem(LAST_LOGIN_METHOD_KEY) as LoginMethod | null;
@@ -53,7 +58,7 @@ export default function LoginForm() {
     const result = await login(data);
     setAccessToken(result.accessToken);
     setLocalStorageItem(LAST_LOGIN_METHOD_KEY, "email");
-    router.replace("/");
+    router.replace(redirectTo);
   };
 
   // 구글 로그인
@@ -62,7 +67,7 @@ export default function LoginForm() {
       const result = await googleLogin({ accessToken: tokenResponse.access_token });
       setAccessToken(result.accessToken);
       setLocalStorageItem(LAST_LOGIN_METHOD_KEY, "google");
-      router.replace("/");
+      router.replace(redirectTo);
     },
   });
 

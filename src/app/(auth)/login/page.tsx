@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import LoginForm from "@/features/auth/login/LoginForm";
 
 export const metadata: Metadata = { title: "로그인" };
 
 export default function LoginPage() {
-  
+
   return (
     <div className="w-full max-w-sm md:max-w-4xl md:grid md:grid-cols-2 md:gap-16 md:items-center">
       {/* 데스크탑 왼쪽 영역 */}
@@ -25,7 +26,9 @@ export default function LoginPage() {
         </p>
       </div>
 
-      <LoginForm />
+      <Suspense fallback={null}>
+        <LoginForm />
+      </Suspense>
     </div>
   );
 }
