@@ -1,3 +1,4 @@
+import Link from "next/link";
 import clsx from "clsx";
 import { News } from "@/features/news/news.type";
 
@@ -8,7 +9,10 @@ interface NewsCardProps {
 export default function NewsCard({ news }: NewsCardProps) {
 
   return (
-    <div className="py-5 px-3 -mx-3 hover:bg-gray-900/50 transition-colors cursor-pointer">
+    <Link
+      href={`/news/${news.id}`}
+      className="block py-5 px-3 -mx-3 hover:bg-gray-900/50 transition-colors cursor-pointer"
+    >
       <div className="flex items-center gap-2 mb-3 md:mb-2">
         <div className="w-8 h-6 rounded bg-gray-700 flex items-center justify-center text-xs font-bold text-gray-300 flex-shrink-0">
           {news.stockName.slice(0, 2)}
@@ -25,7 +29,7 @@ export default function NewsCard({ news }: NewsCardProps) {
         <div className="text-xs md:text-sm text-blue-400 font-medium mb-1">AI 요약</div>
         <p className="text-xs md:text-sm text-gray-400 leading-relaxed line-clamp-2">{news.summary}</p>
       </div>
-    </div>
+    </Link>
   );
 }
 

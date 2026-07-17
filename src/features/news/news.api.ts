@@ -1,9 +1,14 @@
-import { requestRequired } from "@/shared/lib/axios";
-import { MentionRanking, NewsRequest, NewsResponse, SentimentSummary } from "@/features/news/news.type";
+import { request, requestRequired } from "@/shared/lib/axios";
+import { MentionRanking, NewsDetail, NewsRequest, NewsResponse, SentimentSummary } from "@/features/news/news.type";
 
 // 뉴스 목록 조회
 export const getNewsList = async (params: NewsRequest) => {
   return requestRequired<NewsResponse>({ method: "GET", url: "/api/news", params });
+}
+
+// 뉴스 상세 조회
+export const getNewsDetail = async (id: number) => {
+  return request<NewsDetail>({ method: "GET", url: `/api/news/${id}`, meta: { skipErrorAlert: true } });
 }
 
 // 오늘의 시장 평가 조회

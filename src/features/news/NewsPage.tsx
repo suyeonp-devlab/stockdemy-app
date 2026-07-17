@@ -133,7 +133,7 @@ export default function NewsPage() {
 
         {/* 데스크탑: 시장 평가 + 많이 언급된 종목 */}
         <div className="hidden md:block w-64 flex-shrink-0">
-          <div className="sticky top-24 space-y-4">
+          <div className="sticky top-32 space-y-4">
             <SentimentCard />
             <TopMentionsCard onStockClick={handleStockClick} />
           </div>

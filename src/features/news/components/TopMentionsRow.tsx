@@ -3,7 +3,7 @@
 import { MentionRanking } from "@/features/news/news.type";
 
 interface TopMentionsRowProps {
-  mention: MentionRanking
+  mention: MentionRanking;
   onStockClick: (stockName: string) => void;
 }
 

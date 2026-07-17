@@ -16,7 +16,8 @@ export interface NewsResponse {
 
 // 뉴스 항목
 export interface News {
-  id: string;
+  id: number;
+  stockCode: string;
   stockName: string;
   title: string;
   summary: string;
@@ -25,6 +26,23 @@ export interface News {
   categoryNm: string;
   sentiment: string;
   sentimentNm: string;
+  sourceUrl: string;
+  sourceName: string;
+}
+
+// 뉴스 상세
+export interface NewsDetail extends News {
+  confidence: number;
+  reasoning: string;
+  relatedStocks: NewsRelatedStock[];
+}
+
+// 뉴스 관련 종목 영향
+export interface NewsRelatedStock {
+  stockCode: string;
+  stockName: string;
+  impact: string;
+  impactNm: string;
 }
 
 // 오늘의 시장 평가
