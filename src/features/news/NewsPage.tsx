@@ -107,7 +107,12 @@ export default function NewsPage() {
       <div className="flex flex-col md:flex-row gap-3 mb-8">
         {isCategoriesLoading ?
           <CategoryFilterSkeleton /> :
-          <FilterTabs options={tabOptions} value={searchQuery.category} onChange={handleTabChange} className="-mx-6 px-6" />
+          <FilterTabs
+            options={tabOptions}
+            value={searchQuery.favorite ? FAVORITE_TAB : searchQuery.category}
+            onChange={handleTabChange}
+            className="-mx-6 px-6"
+          />
         }
 
         <div className="relative md:ml-auto">
