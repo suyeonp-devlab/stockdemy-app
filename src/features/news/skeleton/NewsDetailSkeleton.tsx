@@ -5,9 +5,9 @@ export default function NewsDetailSkeleton() {
 
   return (
     <div className="max-w-screen-2xl mx-auto px-6 md:px-10 py-10">
-      <div className="flex flex-col md:flex-row gap-10">
+      <div className="flex flex-col md:flex-row gap-10 justify-between">
         {/* 뉴스 상세 */}
-        <div className="flex-1 min-w-0 max-w-3xl">
+        <div className="flex-1 min-w-0">
           {/* 주체 종목 · AI 평가 */}
           <div className="flex items-center mb-3">
             <Skeleton className="h-4 w-20" />
@@ -45,8 +45,8 @@ export default function NewsDetailSkeleton() {
           </div>
 
           {/* 출처 */}
-          <div className="border-t border-gray-800 mt-8 pt-6">
-            <Skeleton className="h-4 w-40" />
+          <div className="md:border-t md:border-gray-800 mt-4 md:mt-8 pt-4">
+            <Skeleton className="h-4 w-40 ml-auto" />
           </div>
         </div>
 

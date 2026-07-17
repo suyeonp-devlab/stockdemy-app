@@ -3,7 +3,7 @@ import Skeleton from "@/shared/components/skeleton/Skeleton";
 export default function RelatedNewsCardSkeleton() {
 
   return (
-    <div className="hidden md:block w-64 flex-shrink-0">
+    <div className="hidden md:block w-76 flex-shrink-0">
       <div className="bg-gray-900 rounded-md border border-gray-800 p-5">
         <Skeleton className="h-4 w-32 mb-2" />
         <div className="divide-y divide-gray-800/50">
