@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Search } from "lucide-react";
+import { HelpCircle, Search } from "lucide-react";
 import { useGetNewsListQuery } from "@/features/news/news.query";
 import { useGetCommonCodesQuery } from "@/shared/common-code/common-code.query";
 import { toFilterOptions } from "@/shared/utils/view";
@@ -23,7 +23,7 @@ const FAVORITE_TAB = "favorite";
 export default function NewsPage() {
 
   const router = useRouter();
-  const { confirm } = useOverlay();
+  const { confirm, openPopup } = useOverlay();
 
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
@@ -87,7 +87,19 @@ export default function NewsPage() {
   return (
     <div className="max-w-screen-2xl mx-auto px-6 md:px-10 py-10">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-100 mb-2">뉴스 & AI 분석</h1>
+        <div className="flex items-center gap-3 mb-2">
+          <h1 className="text-2xl font-bold text-gray-100">뉴스 & AI 분석</h1>
+
+          {/* 모바일: 시장 평가 */}
+          <button
+            onClick={() => openPopup("오늘의 시장 평가", <SentimentCard />)}
+            className="md:hidden inline-flex items-center self-baseline-last leading-loose gap-1 text-sm text-gray-500 hover:text-gray-300 transition-colors"
+          >
+            <HelpCircle size={16} />
+            시장 평가
+          </button>
+        </div>
+
         <p className="text-sm text-gray-400">AI가 종목 관련 뉴스를 요약하고 시장 흐름을 분석해드려요.</p>
       </div>
 

@@ -2,6 +2,7 @@
 
 import { useGetSentimentSummaryQuery } from "@/features/news/news.query";
 import SentimentCardSkeleton from "@/features/news/skeleton/SentimentCardSkeleton";
+import { formatNumber } from "@/shared/utils/number";
 
 export default function SentimentCard() {
 
@@ -20,8 +21,8 @@ export default function SentimentCard() {
   ];
 
   return (
-    <div className="bg-gray-900 rounded-md border border-gray-800 p-5">
-      <h3 className="text-sm font-semibold text-gray-100 mb-4">오늘의 시장 평가</h3>
+    <div className="bg-gray-900 rounded-md md:border md:border-gray-800 pt-3 md:p-5">
+      <h3 className="hidden md:block text-sm font-semibold text-gray-100 mb-4">오늘의 시장 평가</h3>
 
       <div className="space-y-3">
         {bars.map((bar) => (
@@ -35,7 +36,7 @@ export default function SentimentCard() {
         ))}
       </div>
 
-      <p className="text-xs text-gray-600 mt-4">오늘 수집된 뉴스 {summary.totalCount}건 기준</p>
+      <p className="text-xs text-gray-600 mt-4">오늘 수집된 뉴스 {formatNumber(summary.totalCount)}건 기준</p>
     </div>
   );
 }

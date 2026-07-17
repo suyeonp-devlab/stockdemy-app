@@ -1,6 +1,7 @@
 "use client";
 
 import { MentionRanking } from "@/features/news/news.type";
+import { formatNumber } from "@/shared/utils/number";
 
 interface TopMentionsRowProps {
   mention: MentionRanking;
@@ -20,7 +21,7 @@ export default function TopMentionsRow({ mention, onStockClick }: TopMentionsRow
         </div>
         <span className="text-xs text-gray-300 truncate">{mention.stockName}</span>
       </div>
-      <span className="text-xs text-gray-500 flex-shrink-0">{mention.count}건</span>
+      <span className="text-xs text-gray-500 flex-shrink-0">{formatNumber(mention.count)}건</span>
     </div>
   );
 }
