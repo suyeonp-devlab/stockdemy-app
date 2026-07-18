@@ -35,7 +35,7 @@ export default function SectorHeatmap() {
     <section className="max-w-screen-2xl mx-auto px-6 md:px-10 pb-12">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-lg font-bold text-gray-100">실시간 이슈 업종</h2>
-        <Link href="/stocks?tab=sector" className="text-sm text-blue-400 hover:text-blue-300 transition-colors">전체 보기</Link>
+        <Link href="/stock?tab=sector" className="text-sm text-blue-400 hover:text-blue-300 transition-colors">전체 보기</Link>
       </div>
 
       {isLoading ? (
@@ -73,7 +73,7 @@ function SectorRow({ sector, rank, isHot }: { sector: SectorSummary; rank: numbe
   const isUp = sector.changePercent >= 0;
   return (
     <Link
-      href={`/stocks?tab=sector&sector=${encodeURIComponent(sector.name)}`}
+      href={`/stock?tab=sector&sector=${encodeURIComponent(sector.name)}`}
       className="flex items-center gap-3 py-3 px-2 -mx-2 hover:bg-gray-900 rounded-xl transition-colors"
     >
       <span className="text-xs text-gray-600 w-5 flex-shrink-0 tabular-nums">{rank}</span>

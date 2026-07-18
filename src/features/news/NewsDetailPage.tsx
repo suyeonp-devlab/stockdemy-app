@@ -32,7 +32,7 @@ export default function NewsDetailPage({ id }: NewsDetailPageProps) {
           {/* 주체 종목 · AI 평가 */}
           <div className="flex items-center gap-2 mb-3 text-sm">
             <Link
-              href={`/stocks/${news.stockCode}`}
+              href={`/stock/${news.stockCode}`}
               className="inline-flex items-center gap-0.5 font-medium text-blue-400 hover:text-blue-300 transition-colors"
             >
               {news.stockName}

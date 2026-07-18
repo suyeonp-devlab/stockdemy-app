@@ -10,7 +10,7 @@ export default function RelatedStockChip({ stock }: RelatedStockChipProps) {
 
   return (
     <Link
-      href={`/stocks/${stock.stockCode}`}
+      href={`/stock/${stock.stockCode}`}
       className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs md:text-sm rounded-full bg-gray-900 border border-gray-800 hover:border-gray-600 transition-colors"
     >
       <span className="text-gray-100">{stock.stockName}</span>

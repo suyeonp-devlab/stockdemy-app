@@ -37,7 +37,7 @@ export default function Navigation({ className }: NavigationProps){
 // 네비게이션 목록
 const NAV_ITEMS = [
   { label: "홈", href: "/" },
-  { label: "종목 검색", href: "/stocks" },
+  { label: "종목 검색", href: "/stock" },
   { label: "뉴스 & AI 분석", href: "/news" },
   { label: "주식 일지", href: "/journals" },
 ];
