@@ -16,7 +16,6 @@ export const useGetMeQuery = () => {
     queryKey: AUTH_QUERY_KEYS.me(),
     queryFn: getMe,
     retry: false,
-    loading: false,
   });
 };
 

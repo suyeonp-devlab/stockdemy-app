@@ -14,6 +14,5 @@ export const useGetCommonCodesQuery = (params: CommonCodeRequest) => {
   return useAppQuery({
     queryKey: COMMON_CODE_QUERY_KEYS.list(params),
     queryFn: () => getCommonCodes(params),
-    loading: false,
   });
 };
