@@ -5,14 +5,19 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import { Check, ChevronLeft, Loader2, RefreshCw, Search, Sparkles, X } from "lucide-react";
-import { useStockListQuery } from "@/features/stocks/stocks.query";
-import { StockListItem, Market } from "@/features/stocks/stocks.type";
+import { useGetStockListQuery } from "@/features/stock/stock.query";
+import { Stock, StockRequest } from "@/features/stock/stock.type";
 import { useCreateJournalMutation, useJournalsQuery, useRequestAiReviewMutation } from "@/features/journals/journals.query";
 import { TradeType } from "@/features/journals/journals.type";
 import TradeTypeBadge from "@/features/journals/components/TradeTypeBadge";
 import Skeleton from "@/shared/components/skeleton/Skeleton";
 
 const today = () => new Date().toISOString().slice(0, 10);
+
+// 필터 없이 전체 종목 검색용 request (임시, journals 쪽 데이터 조회 방식은 추후 재정리 예정)
+const ALL_STOCKS_REQUEST: StockRequest = {
+  market: "all", sector: "", stockName: "", favorite: false, topVolume: false, page: 1, pageSize: 9999,
+};
 
 // 종목 코드 기반 로고 배경색 (검색 결과/선택 표시에서 동일 종목은 항상 같은 색)
 const logoColors = [
@@ -25,9 +30,9 @@ const logoColors = [
   "bg-teal-800 text-teal-200",
   "bg-gray-700 text-gray-200",
 ];
-const getLogoColor = (code: string) => logoColors[code.charCodeAt(0) % logoColors.length];
+const getLogoColor = (stockCode: string) => logoColors[stockCode.charCodeAt(0) % logoColors.length];
 
-const formatPrice = (value: number, market: Market) =>
+const formatPrice = (value: number, market: string) =>
   market === "NASDAQ" ? `$${value.toFixed(2)}` : `${value.toLocaleString()}원`;
 
 // 최근 작성한 일지 패널에 보여줄 최대 개수
@@ -36,13 +41,14 @@ const RECENT_COUNT = 5;
 export default function JournalFormPage() {
 
   const router = useRouter();
-  const { data: stocks } = useStockListQuery();
+  const { data: stockResponse } = useGetStockListQuery(ALL_STOCKS_REQUEST);
+  const stocks = stockResponse?.items;
   const { data: journals, isLoading: isJournalsLoading } = useJournalsQuery();
   const { mutate: createJournal, isPending: isSaving } = useCreateJournalMutation();
   const { mutate: requestAiReview, isPending: isRequestingAi } = useRequestAiReviewMutation();
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedStock, setSelectedStock] = useState<StockListItem | null>(null);
+  const [selectedStock, setSelectedStock] = useState<Stock | null>(null);
   const [tradeType, setTradeType] = useState<TradeType>("BUY");
   const [tradeDate, setTradeDate] = useState(today());
   const [price, setPrice] = useState("");
@@ -53,7 +59,7 @@ export default function JournalFormPage() {
   const searchResults = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     if (!query || !stocks) return [];
-    return stocks.filter((s) => s.name.toLowerCase().includes(query) || s.code.toLowerCase().includes(query)).slice(0, 8);
+    return stocks.filter((s) => s.stockName.toLowerCase().includes(query) || s.stockCode.toLowerCase().includes(query)).slice(0, 8);
   }, [stocks, searchQuery]);
 
   const recentJournals = useMemo(() => {
@@ -75,8 +81,8 @@ export default function JournalFormPage() {
     if (!selectedStock || !isValid) return;
     createJournal(
       {
-        stockCode: selectedStock.code,
-        stockName: selectedStock.name,
+        stockCode: selectedStock.stockCode,
+        stockName: selectedStock.stockName,
         market: selectedStock.market,
         tradeType,
         tradeDate,
@@ -118,12 +124,12 @@ export default function JournalFormPage() {
           {selectedStock ? (
             <div className="flex items-center justify-between bg-gray-800 border border-blue-500 rounded-xl px-4 py-3">
               <div className="flex items-center gap-3">
-                <div className={clsx("w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold flex-shrink-0", getLogoColor(selectedStock.code))}>
-                  {selectedStock.name.slice(0, 1)}
+                <div className={clsx("w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold flex-shrink-0", getLogoColor(selectedStock.stockCode))}>
+                  {selectedStock.stockName.slice(0, 1)}
                 </div>
                 <div>
-                  <div className="text-sm font-semibold text-gray-100">{selectedStock.name}</div>
-                  <div className="text-xs text-gray-500">{selectedStock.code} · {selectedStock.market}</div>
+                  <div className="text-sm font-semibold text-gray-100">{selectedStock.stockName}</div>
+                  <div className="text-xs text-gray-500">{selectedStock.stockCode} · {selectedStock.marketNm}</div>
                 </div>
               </div>
               {!isSaved && (
@@ -146,16 +152,16 @@ export default function JournalFormPage() {
                 <div className="absolute z-10 mt-2 w-full bg-gray-800 border border-gray-700 rounded-xl overflow-hidden">
                   {searchResults.map((stock) => (
                     <button
-                      key={stock.code}
+                      key={stock.stockCode}
                       onClick={() => { setSelectedStock(stock); setSearchQuery(""); }}
                       className="flex items-center gap-3 w-full px-4 py-3 hover:bg-gray-700 transition-colors text-left border-b border-gray-700 last:border-0"
                     >
-                      <div className={clsx("w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0", getLogoColor(stock.code))}>
-                        {stock.name.slice(0, 1)}
+                      <div className={clsx("w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0", getLogoColor(stock.stockCode))}>
+                        {stock.stockName.slice(0, 1)}
                       </div>
                       <div>
-                        <div className="text-sm font-medium text-gray-100">{stock.name}</div>
-                        <div className="text-xs text-gray-500">{stock.code} · {stock.market}</div>
+                        <div className="text-sm font-medium text-gray-100">{stock.stockName}</div>
+                        <div className="text-xs text-gray-500">{stock.stockCode} · {stock.marketNm}</div>
                       </div>
                       <div className="ml-auto text-xs text-gray-500">
                         {stock.market === "NASDAQ" ? `$${stock.price.toFixed(2)}` : `${stock.price.toLocaleString()}원`}
