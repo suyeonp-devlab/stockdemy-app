@@ -1,0 +1,47 @@
+import { StockRequest, StockURLSearchParams, TabMode } from "@/features/stock/stock.type";
+import { useAuthStore } from "@/shared/store/auth.store";
+
+// 탭 유형 검사
+export const isTabMode = (value: string | undefined): value is TabMode => {
+  return value === "topVolume" || value === "market" || value === "sector" || value === "favorite";
+}
+
+// url 쿼리 파라미터 포맷 (쿼리 파라미터 → 종목 request)
+export const formatStockSearchParams = (
+  params: StockURLSearchParams, pageSize: number
+): StockRequest => {
+
+  const { tab, market = "", sector = "", stockName = "", page } = params;
+
+  let currentTab = isTabMode(tab) ? tab : "topVolume";
+
+  // 비로그인 상태 → 관심종목 탭 사용 불가
+  const isLoggedIn = useAuthStore.getState().isLoggedIn;
+  if (currentTab === "favorite" && !isLoggedIn) currentTab = "topVolume";
+
+  return {
+    market: currentTab === "market" ? market : "",
+    sector: currentTab === "sector" ? sector : "",
+    stockName: stockName.trim(),
+    favorite: currentTab === "favorite",
+    topVolume: currentTab === "topVolume",
+    page: Math.max(1, Number(page) || 1),
+    pageSize,
+  };
+}
+
+// url 쿼리 파라미터 생성
+export const buildStockSearchParams = (params: StockURLSearchParams): string => {
+
+  const query = new URLSearchParams();
+
+  const normalizedTab = isTabMode(params.tab) ? params.tab : "topVolume";
+  query.set("tab", normalizedTab);
+
+  if (normalizedTab === "market" && params.market) query.set("market", params.market);
+  if (normalizedTab === "sector" && params.sector) query.set("sector", params.sector);
+  if (params.stockName) query.set("stockName", params.stockName);
+  if (normalizedTab !== "topVolume" && params.page) query.set("page", params.page);
+
+  return query.toString();
+};

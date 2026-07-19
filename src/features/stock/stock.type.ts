@@ -101,3 +101,15 @@ export interface StockFavoriteRequest {
   stockCode: string;
   favorite: boolean;
 }
+
+// 종목 목록 tab 유형
+export type TabMode = "topVolume" | "market" | "sector" | "favorite";
+
+// 종목 목록 url 쿼리 파라미터
+export interface StockURLSearchParams {
+  tab?: string;
+  sector?: string;
+  market?: string;
+  stockName?: string;
+  page?: string;
+}
