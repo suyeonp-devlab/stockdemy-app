@@ -11,13 +11,10 @@ export default function SentimentCard() {
   // 조회중
   if (isLoading) return <SentimentCardSkeleton />
 
-  // 미존재
-  if (!summary) return null;
-
   const bars = [
-    { label: "긍정", value: summary.positive, colorClass: "bg-red-400", textClass: "text-red-400" },
-    { label: "중립", value: summary.neutral, colorClass: "bg-gray-500", textClass: "text-gray-400" },
-    { label: "부정", value: summary.negative, colorClass: "bg-sky-400", textClass: "text-sky-400" },
+    { label: "긍정", value: summary?.positive ?? 0, colorClass: "bg-red-400", textClass: "text-red-400" },
+    { label: "중립", value: summary?.neutral ?? 0, colorClass: "bg-gray-500", textClass: "text-gray-400" },
+    { label: "부정", value: summary?.negative ?? 0, colorClass: "bg-sky-400", textClass: "text-sky-400" },
   ];
 
   return (
@@ -36,7 +33,7 @@ export default function SentimentCard() {
         ))}
       </div>
 
-      <p className="text-xs text-gray-600 mt-4">오늘 수집된 뉴스 {formatNumber(summary.totalCount)}건 기준</p>
+      <p className="text-xs text-gray-600 mt-4">오늘 수집된 뉴스 {formatNumber(summary?.totalCount ?? 0)}건 기준</p>
     </div>
   );
 }
