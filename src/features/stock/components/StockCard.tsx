@@ -9,7 +9,7 @@ import { useAuthStore } from "@/shared/store/auth.store";
 import { usePathname, useRouter } from "next/navigation";
 import { useOverlay } from "@/system/overlay/useOverlay";
 import { buildLoginUrl } from "@/features/auth/auth.lib";
-import { formatNumber } from "@/shared/utils/number";
+import { formatPrice } from "@/shared/utils/number";
 
 interface StockCardProps {
   stock: Stock
@@ -57,7 +57,7 @@ export default function StockCard({ stock, logoClassName }: StockCardProps) {
 
       <div className="text-right flex-shrink-0 mr-2">
         <div className="text-sm md:text-base font-medium text-gray-100 whitespace-nowrap mb-0.5">
-          {stock.market === "NASDAQ" ? `$${formatNumber(stock.price)}` : `${formatNumber(stock.price)}원`}
+          {formatPrice(stock.price, stock.market)}
         </div>
         <div className={clsx("text-xs md:text-sm tabular-nums", stock.changePercent >= 0 ? "text-red-400" : "text-sky-400")}>
           {stock.changePercent >= 0 ? "▲ +" : "▼ "}{stock.changePercent}%
