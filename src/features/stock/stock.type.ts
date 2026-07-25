@@ -43,6 +43,7 @@ export interface StockFundamentals {
   sentiment: string;
   sentimentNm: string;
   favorite: boolean;
+  aiComment: string | null;
   prevClose: number;          // 전일종가
   week52High: number;         // 52주 최고가
   week52Low: number;          // 52주 최저가

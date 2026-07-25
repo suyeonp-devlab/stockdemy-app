@@ -12,7 +12,7 @@ import {
 } from "@/features/stock/stock.api";
 import { StockRequest } from "@/features/stock/stock.type";
 
-const STOCK_QUERY_KEYS = {
+export const STOCK_QUERY_KEYS = {
   all: () => ["stock"] as const,
   lists: () => [...STOCK_QUERY_KEYS.all(), "lists"] as const,
   list: (params: StockRequest) => [...STOCK_QUERY_KEYS.lists(), params] as const,
