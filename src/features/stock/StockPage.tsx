@@ -38,7 +38,7 @@ export default function StockPage() {
   const searchQuery: StockRequest = formatStockSearchParams(params, PAGE_SIZE);
 
   // 종목명 검색어
-  const [stockNameInput, setStockNameInput] = useState("");
+  const [keywordInput, setKeywordInput] = useState("");
 
   const { data: stockSectors, isLoading: isSectorsLoading } = useGetCommonCodesQuery({ groupId: "STOCK_SECTOR" });
   const { data: stockMarkets, isLoading: isMarketsLoading } = useGetCommonCodesQuery({ groupId: "STOCK_MARKET" });
@@ -141,13 +141,13 @@ export default function StockPage() {
         <div className="relative flex-shrink-0">
           <Input
             type="text"
-            placeholder="종목명으로 검색"
-            value={stockNameInput}
-            onChange={(e) => setStockNameInput(e.target.value)}
+            placeholder="종목명 또는 티커로 검색"
+            value={keywordInput}
+            onChange={(e) => setKeywordInput(e.target.value)}
             className="pr-9 py-2 w-full md:w-90"
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.nativeEvent.isComposing) {
-                handleSearchChange("stockName", stockNameInput.trim());
+                handleSearchChange("keyword", keywordInput.trim());
               }
             }}
           />
@@ -155,7 +155,7 @@ export default function StockPage() {
             icon={<Search size={20} />}
             size="sm"
             aria-label="검색"
-            onClick={() => handleSearchChange("stockName", stockNameInput.trim())}
+            onClick={() => handleSearchChange("keyword", keywordInput.trim())}
             className="absolute top-2.5 right-3 text-gray-500"
           />
         </div>

@@ -55,7 +55,7 @@ export const formatLargeCurrency = (
 ) => {
 
   const valueNum = Number(value);
-  if (!Number.isNaN(valueNum)) return "";
+  if (Number.isNaN(valueNum)) return "";
 
   if (market === "NASDAQ") {
     if (valueNum >= 1e12) return `$${(valueNum / 1e12).toFixed(1)}T`;

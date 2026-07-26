@@ -11,7 +11,7 @@ export const formatStockSearchParams = (
   params: StockURLSearchParams, pageSize: number
 ): StockRequest => {
 
-  const { tab, market = "", sector = "", stockName = "", page } = params;
+  const { tab, market = "", sector = "", keyword = "", page } = params;
 
   let currentTab = isTabMode(tab) ? tab : "topVolume";
 
@@ -22,7 +22,7 @@ export const formatStockSearchParams = (
   return {
     market: currentTab === "market" ? market : "",
     sector: currentTab === "sector" ? sector : "",
-    stockName: stockName.trim(),
+    keyword: keyword.trim(),
     favorite: currentTab === "favorite",
     topVolume: currentTab === "topVolume",
     page: Math.max(1, Number(page) || 1),
@@ -40,7 +40,7 @@ export const buildStockSearchParams = (params: StockURLSearchParams): string => 
 
   if (normalizedTab === "market" && params.market) query.set("market", params.market);
   if (normalizedTab === "sector" && params.sector) query.set("sector", params.sector);
-  if (params.stockName) query.set("stockName", params.stockName);
+  if (params.keyword) query.set("keyword", params.keyword);
   if (normalizedTab !== "topVolume" && params.page) query.set("page", params.page);
 
   return query.toString();

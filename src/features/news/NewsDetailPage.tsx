@@ -88,7 +88,7 @@ export default function NewsDetailPage({ id }: NewsDetailPageProps) {
         </article>
 
         {/* 데스크탑: 연관 뉴스 */}
-        <RelatedNewsCard id={news.id} stockName={news.stockName} />
+        <RelatedNewsCard id={news.id} stockName={news.stockName} stockCode={news.stockCode} />
       </div>
     </div>
   );

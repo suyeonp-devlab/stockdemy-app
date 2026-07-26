@@ -5,7 +5,7 @@ import TopMentionsCardSkeleton from "@/features/news/skeleton/TopMentionsCardSke
 import TopMentionsRow from "@/features/news/components/TopMentionsRow";
 
 interface TopMentionsCardProps {
-  onStockClick: (stockName: string) => void;
+  onStockClick: (stockCode: string, stockName: string) => void;
 }
 
 export default function TopMentionsCard({ onStockClick }: TopMentionsCardProps) {

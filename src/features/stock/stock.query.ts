@@ -24,7 +24,8 @@ export const STOCK_QUERY_KEYS = {
   minuteBar: (stockCode: string) => [...STOCK_QUERY_KEYS.minuteBars(), stockCode] as const,
   quotes: () => [...STOCK_QUERY_KEYS.all(), "quotes"] as const,
   quote: (stockCode: string) => [...STOCK_QUERY_KEYS.quotes(), stockCode] as const,
-  disclosure: () => [...STOCK_QUERY_KEYS.all(), "disclosure"] as const,
+  disclosures: () => [...STOCK_QUERY_KEYS.all(), "disclosures"] as const,
+  disclosure: (stockCode: string) => [...STOCK_QUERY_KEYS.disclosures(), stockCode] as const,
 };
 
 // 종목 목록 조회 query
@@ -95,11 +96,11 @@ export const useGetTodayQuoteQuery = (stockCode: string | null) => {
 };
 
 // 오늘의 공시 조회 query
-export const useGetDisclosureListQuery = () => {
+export const useGetDisclosureListQuery = (stockCode?: string | null) => {
 
   return useAppQuery({
-    queryKey: STOCK_QUERY_KEYS.disclosure(),
-    queryFn: getDisclosureList,
+    queryKey: stockCode ? STOCK_QUERY_KEYS.disclosure(stockCode) : STOCK_QUERY_KEYS.disclosures(),
+    queryFn: () => getDisclosureList(stockCode ?? ""),
     loading: false
   });
 };

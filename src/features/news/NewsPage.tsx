@@ -31,7 +31,7 @@ export default function NewsPage() {
 
   // 뉴스 조회 조건
   const [searchQuery, setSearchQuery] = useState<NewsRequest>({
-    category: "", stockName: "", favorite: false, page: 1, pageSize: PAGE_SIZE
+    category: "", keyword: "", favorite: false, page: 1, pageSize: PAGE_SIZE
   });
 
   // 조회 조건 변경 → 스크롤 최상단 이동
@@ -40,7 +40,7 @@ export default function NewsPage() {
   }, [searchQuery]);
 
   // 종목명 검색어
-  const [stockNameInput, setStockNameInput] = useState("");
+  const [keywordInput, setKeywordInput] = useState("");
 
   const { data: newsCategories, isLoading: isCategoriesLoading } = useGetCommonCodesQuery({ groupId: "NEWS_CATEGORY" });
   const { data: newsResponse, isLoading } = useGetNewsListQuery(searchQuery);
@@ -81,9 +81,9 @@ export default function NewsPage() {
   };
 
   // 많이 언급된 종목 → 종목명 선택
-  const handleStockClick = (stockName: string) => {
-    setStockNameInput(stockName);
-    handleSearchChange("stockName", stockName);
+  const handleStockClick = (stockCode: string, stockName: string) => {
+    setKeywordInput(stockName);
+    handleSearchChange("keyword", stockCode);
   };
 
   return (
@@ -120,13 +120,13 @@ export default function NewsPage() {
         <div className="relative md:ml-auto">
           <Input
             type="text"
-            placeholder="종목명으로 검색"
-            value={stockNameInput}
-            onChange={(e) => setStockNameInput(e.target.value)}
+            placeholder="종목명 또는 티커로 검색"
+            value={keywordInput}
+            onChange={(e) => setKeywordInput(e.target.value)}
             className="pr-9 py-2 w-full md:w-64"
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.nativeEvent.isComposing) {
-                handleSearchChange("stockName", stockNameInput.trim());
+                handleSearchChange("keyword", keywordInput.trim());
               }
             }}
           />
@@ -134,7 +134,7 @@ export default function NewsPage() {
             icon={<Search size={20} />}
             size="sm"
             aria-label="검색"
-            onClick={() => handleSearchChange("stockName", stockNameInput.trim())}
+            onClick={() => handleSearchChange("keyword", keywordInput.trim())}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
           />
         </div>

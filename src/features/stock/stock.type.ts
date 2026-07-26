@@ -2,7 +2,7 @@
 export interface StockRequest {
   market: string;
   sector: string;
-  stockName: string;
+  keyword: string;
   favorite: boolean;
   topVolume: boolean;
   page: number;
@@ -111,6 +111,6 @@ export interface StockURLSearchParams {
   tab?: string;
   sector?: string;
   market?: string;
-  stockName?: string;
+  keyword?: string;
   page?: string;
 }

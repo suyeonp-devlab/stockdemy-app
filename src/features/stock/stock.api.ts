@@ -36,8 +36,8 @@ export const getTodayQuote = async (stockCode: string) => {
 }
 
 // 오늘의 공시 조회
-export const getDisclosureList = async () => {
-  return requestRequired<Disclosure[]>({ method: "GET", url: "/api/stocks/disclosures" });
+export const getDisclosureList = async (stockCode: string) => {
+  return requestRequired<Disclosure[]>({ method: "GET", url: "/api/stocks/disclosures", params: { stockCode } });
 }
 
 // 관심종목 등록 및 해제
