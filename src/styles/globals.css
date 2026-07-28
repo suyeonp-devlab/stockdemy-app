@@ -75,3 +75,15 @@ input:-webkit-autofill:focus {
 .scroll-fade-mask {
   mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
 }
+
+/*차트 툴팁 스타일*/
+.chart-tooltip-row {
+  display: flex;
+  align-items: center;
+  line-height: 1.5;
+}
+
+.chart-tooltip-row .label {
+  width: 40px;
+  flex-shrink: 0;
+}

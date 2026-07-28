@@ -4,9 +4,10 @@ import { News } from "@/features/news/news.type";
 
 interface NewsCardProps {
   news: News;
+  showLogo?: boolean;
 }
 
-export default function NewsCard({ news }: NewsCardProps) {
+export default function NewsCard({ news, showLogo = true }: NewsCardProps) {
 
   return (
     <Link
@@ -14,11 +15,15 @@ export default function NewsCard({ news }: NewsCardProps) {
       className="block py-5 px-3 -mx-3 hover:bg-gray-900/50 transition-colors cursor-pointer"
     >
       <div className="flex items-center gap-2 mb-3 md:mb-2">
-        <div className="w-8 h-6 rounded bg-gray-700 flex items-center justify-center text-xs font-bold text-gray-300 flex-shrink-0">
-          {news.stockName.slice(0, 2)}
-        </div>
-        <span className="text-sm text-gray-400">{news.stockName}</span>
-        <span className="text-sm text-gray-600">·</span>
+        {showLogo && (
+          <>
+            <div className="w-8 h-6 rounded bg-gray-700 flex items-center justify-center text-xs font-bold text-gray-300 flex-shrink-0">
+              {news.stockName.slice(0, 2)}
+            </div>
+            <span className="text-sm text-gray-400">{news.stockName}</span>
+            <span className="text-sm text-gray-600">·</span>
+          </>
+        )}
         <span className="text-sm text-gray-600">{news.publishedAt}</span>
         <span className={clsx("px-2 py-0.5 text-sm font-medium rounded-md ml-auto", sentimentStyles[news.sentiment])}>
           {news.sentimentNm}

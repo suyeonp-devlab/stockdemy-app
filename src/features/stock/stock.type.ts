@@ -88,6 +88,16 @@ export interface TodayQuote {
   updatedAt: string;
 }
 
+// 차트용 시세
+export interface ChartBar {
+  time: string | number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+}
+
 // 오늘의 공시
 export interface Disclosure {
   receiptNo: string;

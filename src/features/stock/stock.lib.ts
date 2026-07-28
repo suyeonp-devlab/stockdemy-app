@@ -1,5 +1,7 @@
-import { StockRequest, StockURLSearchParams, TabMode } from "@/features/stock/stock.type";
+import { ChartBar, MinuteBar, PriceBar, StockRequest, StockURLSearchParams, TabMode } from "@/features/stock/stock.type";
 import { useAuthStore } from "@/shared/store/auth.store";
+import { LineData, Time } from "lightweight-charts";
+import { toEpochSeconds } from "@/shared/utils/date-time";
 
 // 탭 유형 검사
 export const isTabMode = (value: string | undefined): value is TabMode => {
@@ -44,4 +46,31 @@ export const buildStockSearchParams = (params: StockURLSearchParams): string => 
   if (normalizedTab !== "topVolume" && params.page) query.set("page", params.page);
 
   return query.toString();
+};
+
+// 차트용 시세 형식으로 변환
+export const toChartBar = (bar: PriceBar | MinuteBar): ChartBar => ({
+  time: "time" in bar ? toEpochSeconds(bar.date, bar.time) : bar.date,
+  open: bar.open,
+  high: bar.high,
+  low: bar.low,
+  close: bar.close,
+  volume: bar.volume,
+});
+
+// 이동평균선 계산
+export const computeMovingAverage = (bars: ChartBar[], period: number): LineData<Time>[] => {
+
+  const points: (LineData<Time> | null)[] = bars.map((bar, index) => {
+
+    if (index < period - 1) return null;
+
+    const slice = bars.slice(index - period + 1, index + 1);
+    const average = slice.reduce((sum, current) => sum + current.close, 0) / period;
+    const value = Math.round(average * 100) / 100;
+
+    return { time: bar.time as Time, value };
+  });
+
+  return points.filter(point => point !== null);
 };

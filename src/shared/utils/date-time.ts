@@ -25,3 +25,64 @@ export const formatSeconds = (
 
   return result;
 };
+
+/**
+ * 날짜를 원하는 포맷으로 변환
+ * @param value 날짜 문자열 또는 Date
+ * @param format 출력 포맷
+ * @example formatDate("20250726", "yyyy.MM.dd") → "2025.07.26"
+ * @example formatDate("20250726153045", "yyyy-MM-dd HH:mm") → "2025-07-26 15:30"
+ */
+export const formatDate = (
+  value: string | Date | null | undefined,
+  format = "yyyy-MM-dd",
+): string => {
+
+  if (!value) return "";
+
+  const compact = value instanceof Date ? compactDate(value) : value.replace(/\D/g, "");
+
+  const tokens: Record<string, string> = {
+    yyyy: compact.slice(0, 4),
+    MM: compact.slice(4, 6),
+    dd: compact.slice(6, 8),
+    HH: compact.slice(8, 10),
+    mm: compact.slice(10, 12),
+    ss: compact.slice(12, 14),
+  };
+
+  return format.replace(/yyyy|MM|dd|HH|mm|ss/g, (token) => tokens[token] ?? "");
+};
+
+/**
+ * Date 객체를 구분자 없는 날짜 문자열로 변환
+ * @param date 변환할 Date 객체
+ * @example compactDate(new Date(2025, 6, 26, 15, 30, 45)) → "20250726153045"
+ */
+const compactDate = (date: Date): string => {
+
+  return [
+    date.getFullYear(),
+    padStart(date.getMonth() + 1, 2, "0"),
+    padStart(date.getDate(), 2, "0"),
+    padStart(date.getHours(), 2, "0"),
+    padStart(date.getMinutes(), 2, "0"),
+    padStart(date.getSeconds(), 2, "0"),
+  ].join("");
+};
+
+/**
+ * 날짜와 시각을 Unix epoch seconds로 변환
+ * @param date 날짜 문자열 (yyyy-MM-dd)
+ * @param time 시각 문자열 (HH:mm)
+ * @example toEpochSeconds("2025-07-26", "15:30") → 1753511400
+ */
+export const toEpochSeconds = (date: string, time: string): number => {
+
+  const [hours, minutes] = time.split(":").map(Number);
+
+  const datetime = new Date(date);
+  datetime.setHours(hours, minutes, 0, 0);
+
+  return Math.floor(datetime.getTime() / 1000);
+};

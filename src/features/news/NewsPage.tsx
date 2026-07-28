@@ -12,7 +12,7 @@ import SentimentCard from "@/features/news/components/SentimentCard";
 import TopMentionsCard from "@/features/news/components/TopMentionsCard";
 import { NewsRequest } from "@/features/news/news.type";
 import { useOverlay } from "@/system/overlay/useOverlay";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { buildLoginUrl } from "@/features/auth/auth.lib";
 import IconButton from "@/shared/components/button/IconButton";
 import NewsCardWrap from "@/features/news/components/NewsCardWrap";
@@ -25,13 +25,16 @@ export default function NewsPage() {
 
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { confirm, openPopup } = useOverlay();
 
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const initialStockCode = searchParams.get("initC") ?? "";
+  const initialStockName = searchParams.get("initN") ?? "";
 
   // 뉴스 조회 조건
   const [searchQuery, setSearchQuery] = useState<NewsRequest>({
-    category: "", keyword: "", favorite: false, page: 1, pageSize: PAGE_SIZE
+    category: "", keyword: initialStockCode, favorite: false, page: 1, pageSize: PAGE_SIZE
   });
 
   // 조회 조건 변경 → 스크롤 최상단 이동
@@ -40,7 +43,7 @@ export default function NewsPage() {
   }, [searchQuery]);
 
   // 종목명 검색어
-  const [keywordInput, setKeywordInput] = useState("");
+  const [keywordInput, setKeywordInput] = useState(initialStockName);
 
   const { data: newsCategories, isLoading: isCategoriesLoading } = useGetCommonCodesQuery({ groupId: "NEWS_CATEGORY" });
   const { data: newsResponse, isLoading } = useGetNewsListQuery(searchQuery);
