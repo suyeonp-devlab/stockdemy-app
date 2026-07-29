@@ -7,6 +7,7 @@ import {
   getPriceBarList,
   getStockFundamentals,
   getStockList,
+  getStockQuotes,
   getTodayQuote,
   toggleStockFavorite,
 } from "@/features/stock/stock.api";
@@ -16,6 +17,8 @@ export const STOCK_QUERY_KEYS = {
   all: () => ["stock"] as const,
   lists: () => [...STOCK_QUERY_KEYS.all(), "lists"] as const,
   list: (params: StockRequest) => [...STOCK_QUERY_KEYS.lists(), params] as const,
+  listQuotes: () => [...STOCK_QUERY_KEYS.all(), "list-quotes"] as const,
+  listQuote: (stockCodes: string[]) => [...STOCK_QUERY_KEYS.listQuotes(), stockCodes] as const,
   details: () => [...STOCK_QUERY_KEYS.all(), "details"] as const,
   detail: (stockCode: string) => [...STOCK_QUERY_KEYS.details(), stockCode] as const,
   priceBars: () => [...STOCK_QUERY_KEYS.all(), "price-bars"] as const,
@@ -36,6 +39,20 @@ export const useGetStockListQuery = (params: StockRequest | null) => {
   return useAppQuery({
     queryKey: enabled ? STOCK_QUERY_KEYS.list(params) : STOCK_QUERY_KEYS.lists(),
     queryFn: () => getStockList(params!),
+    enabled,
+    loading: false,
+  });
+};
+
+// 종목 목록 실시간 시세 조회 query
+export const useGetStockQuotesQuery = (stockCodes: string[] | null) => {
+
+  const enabled = !!stockCodes && stockCodes.length > 0;
+
+  return useAppQuery({
+    queryKey: enabled ? STOCK_QUERY_KEYS.listQuote(stockCodes) : STOCK_QUERY_KEYS.listQuotes(),
+    queryFn: () => getStockQuotes(stockCodes!),
+    refetchInterval: enabled ? 5000 : false,
     enabled,
     loading: false,
   });

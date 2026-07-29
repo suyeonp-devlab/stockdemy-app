@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import { Stock, TabMode } from "@/features/stock/stock.type";
 import StockCardWrapSkeleton from "@/features/stock/skeleton/StockCardWrapSkeleton";
 import { Newspaper } from "lucide-react";
 import Pagination from "@/shared/components/pagination/Pagination";
 import StockCard from "@/features/stock/components/StockCard";
+import { useGetStockQuotesQuery } from "@/features/stock/stock.query";
+
+export type FlashDirection = "up" | "down";
 
 interface StockCardWrapProps {
   isLoading: boolean;
@@ -29,6 +32,49 @@ export default function StockCardWrap({
   // 서브탭 유무에 따라 종목 목록의 상단 여백 조정
   const hasSubTab = tab === "market" || tab === "sector";
 
+  // 현재 목록의 실시간 시세 폴링
+  const stockCodes = useMemo(() => stockList.map((stock) => stock.stockCode), [stockList]);
+  const { data: quotes = [] } = useGetStockQuotesQuery(stockCodes);
+
+  // 폴링된 시세를 목록에 병합
+  const mergedStockList = useMemo(() => {
+
+    if (quotes.length === 0) return stockList;
+
+    const quoteMap = new Map(quotes.map((quote) => [quote.stockCode, quote]));
+
+    return stockList.map((stock) => {
+      const quote = quoteMap.get(stock.stockCode);
+      return quote ? { ...stock, price: quote.price, changePercent: quote.changePercent, marketCap: quote.marketCap } : stock;
+    });
+  }, [stockList, quotes]);
+
+  // 가격 변경 시 배경색 깜빡임 효과 (효과 대상 추적)
+  const prevPricesRef = useRef<Map<string, number>>(new Map());
+  const [flashDirections, setFlashDirections] = useState<Map<string, FlashDirection>>(new Map());
+
+  useEffect(() => {
+
+    const prevPrices = prevPricesRef.current;
+    const nextPrices = new Map<string, number>();
+    const nextFlashDirections = new Map<string, FlashDirection>();
+
+    mergedStockList.forEach((stock) => {
+      const prevPrice = prevPrices.get(stock.stockCode);
+      if (prevPrice !== undefined && prevPrice !== stock.price) {
+        nextFlashDirections.set(stock.stockCode, stock.price > prevPrice ? "up" : "down");
+      }
+      nextPrices.set(stock.stockCode, stock.price);
+    });
+
+    prevPricesRef.current = nextPrices;
+    if (nextFlashDirections.size === 0) return;
+
+    setFlashDirections(nextFlashDirections);
+    const timer = setTimeout(() => setFlashDirections(new Map()), 600);
+    return () => clearTimeout(timer);
+  }, [mergedStockList]);
+
   return (
     <div className="flex-1 min-w-0">
       {/* 조회중 */}
@@ -46,8 +92,13 @@ export default function StockCardWrap({
       {!isLoading && hasStock && (
         <div className={clsx(!hasSubTab && "md:-mt-14")}>
           <div className="divide-y divide-gray-800/50">
-            {stockList.map((stock, index) => (
-              <StockCard key={stock.stockCode} stock={stock} logoClassName={logoColors[index % logoColors.length]} />
+            {mergedStockList.map((stock, index) => (
+              <StockCard
+                key={stock.stockCode}
+                stock={stock}
+                logoClassName={logoColors[index % logoColors.length]}
+                flashDirection={flashDirections.get(stock.stockCode)}
+              />
             ))}
           </div>
 

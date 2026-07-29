@@ -46,10 +46,18 @@ export default function StockChart({
 
   const isLoading = chartType === "DAY" ? isPriceBarsLoading : isMinuteBarsLoading;
 
-  const chartData = useMemo(
-    () => chartType === "DAY" ? priceBars.map(toChartBar) : minuteBars.map(toChartBar),
-    [chartType, priceBars, minuteBars]
-  );
+  // 실시간 봉과 마지막 봉의 시간이 같으면 교체(진행 중 봉 갱신), 다르면 추가(새 봉 시작)
+  const chartData = useMemo(() => {
+
+    const bars = (chartType === "DAY") ? priceBars.map(toChartBar) : minuteBars.map(toChartBar);
+    const liveBar = toChartBar(chartType === "DAY" ? todayQuote.todayBar : todayQuote.latestMinuteBar);
+
+    if (bars.length > 0 && bars[bars.length - 1].time === liveBar.time) {
+      return [...bars.slice(0, -1), liveBar];
+    }
+
+    return [...bars, liveBar];
+  }, [chartType, priceBars, minuteBars, todayQuote]);
 
   // 차트 렌더링
   useEffect(() => {

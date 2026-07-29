@@ -5,6 +5,7 @@ import {
   PriceBar,
   StockFavoriteRequest,
   StockFundamentals,
+  StockQuote,
   StockRequest,
   StockResponse,
   TodayQuote
@@ -13,6 +14,11 @@ import {
 // 종목 목록 조회
 export const getStockList = async (params: StockRequest) => {
   return requestRequired<StockResponse>({ method: "GET", url: "/api/stocks", params });
+}
+
+// 종목 목록 실시간 시세 조회
+export const getStockQuotes = async (stockCodes: string[]) => {
+  return requestRequired<StockQuote[]>({ method: "GET", url: "/api/stocks/quotes", params: { codes: stockCodes.join(",") } });
 }
 
 // 종목 기초데이터 조회

@@ -10,13 +10,19 @@ import { usePathname, useRouter } from "next/navigation";
 import { useOverlay } from "@/system/overlay/useOverlay";
 import { buildLoginUrl } from "@/features/auth/auth.lib";
 import { formatPrice } from "@/shared/utils/number";
+import { FlashDirection } from "@/features/stock/components/StockCardWrap";
 
 interface StockCardProps {
   stock: Stock
   logoClassName: string;
+  flashDirection?: FlashDirection;
 }
 
-export default function StockCard({ stock, logoClassName }: StockCardProps) {
+export default function StockCard({
+  stock,
+  logoClassName,
+  flashDirection
+}: StockCardProps) {
 
   const router = useRouter();
   const pathname = usePathname();
@@ -44,7 +50,11 @@ export default function StockCard({ stock, logoClassName }: StockCardProps) {
   return (
     <Link
       href={`/stock/${stock.stockCode}`}
-      className="flex items-center gap-3.5 py-3 px-2 -mx-2 hover:bg-gray-800 transition-colors cursor-pointer"
+      className={clsx(
+        "flex items-center gap-3.5 py-3 px-2 -mx-2 hover:bg-gray-800 transition-colors cursor-pointer",
+        flashDirection === "up" && "animate-flash-up",
+        flashDirection === "down" && "animate-flash-down"
+      )}
     >
       <div className={clsx("w-9 h-9 md:w-10 md:h-10 rounded-md flex items-center justify-center text-sm font-bold flex-shrink-0", logoClassName)}>
         {stock.stockName.slice(0, 1)}

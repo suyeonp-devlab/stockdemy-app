@@ -10,13 +10,17 @@ interface StockInfoCardProps {
 
 export default function StockInfoCard({ fundamentals, todayQuote }: StockInfoCardProps) {
 
-  const { sharesOutstanding, market, week52High, week52Low, eps, bps, annualDividend, sectorPer, foreignOwnership } = fundamentals;
+  const { sharesOutstanding, market, eps, bps, annualDividend, sectorPer, foreignOwnership } = fundamentals;
   const { price, todayBar, updatedAt } = todayQuote;
 
   const marketCap = price * sharesOutstanding;
   const per = price / eps;
   const pbr = price / bps;
   const dividendYield = annualDividend > 0 ? (annualDividend / price) * 100 : null;
+
+  // 실시간 시세 신고가/신저가 반영
+  const week52High = Math.max(fundamentals.week52High, todayBar.high);
+  const week52Low = Math.min(fundamentals.week52Low, todayBar.low);
 
   return (
     <div>
@@ -49,7 +53,7 @@ export default function StockInfoCard({ fundamentals, todayQuote }: StockInfoCar
           <StockInfoRow label="배당수익률" value={dividendYield !== null ? `${dividendYield.toFixed(1)}%` : "-"} />
           <StockInfoRow label="동일업종 PER" value={`${formatNumber(sectorPer.toFixed(1))}배`} />
           <StockInfoRow label="상장주식수" value={formatNumber(sharesOutstanding)} />
-          {fundamentals.market !== "NASDAQ" && <StockInfoRow label="외국인 소진율" value={`${foreignOwnership.toFixed(1)}%`} />}
+          {fundamentals.market !== "NASDAQ" && <StockInfoRow label="외국인 보유율" value={`${foreignOwnership.toFixed(1)}%`} />}
         </div>
       </div>
     </div>

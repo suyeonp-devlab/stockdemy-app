@@ -32,6 +32,14 @@ export interface Stock {
   favorite: boolean;
 }
 
+// 종목 목록용 실시간 시세
+export interface StockQuote {
+  stockCode: string;
+  price: number;
+  changePercent: number;
+  marketCap: number;
+}
+
 // 종목 기초데이터
 export interface StockFundamentals {
   stockCode: string;
