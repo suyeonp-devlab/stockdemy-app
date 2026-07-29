@@ -3,8 +3,8 @@
 @theme {
   --color-navy: #1E3A5F;
   --animate-fadein: fadein 0.8s ease forwards;
-  --animate-flash-up: flash-up 0.6s ease-out;
-  --animate-flash-down: flash-down 0.6s ease-out;
+  --animate-flash-up: flash-up 1s ease-out;
+  --animate-flash-down: flash-down 1s ease-out;
 }
 
 @keyframes fadein {

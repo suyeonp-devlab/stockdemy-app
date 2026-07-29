@@ -71,7 +71,7 @@ export default function StockCardWrap({
     if (nextFlashDirections.size === 0) return;
 
     setFlashDirections(nextFlashDirections);
-    const timer = setTimeout(() => setFlashDirections(new Map()), 600);
+    const timer = setTimeout(() => setFlashDirections(new Map()), 1000);
     return () => clearTimeout(timer);
   }, [mergedStockList]);
 
