@@ -10,8 +10,8 @@ export default function DisclosureCardSkeleton() {
         <div key={i} className="flex items-start gap-2 py-1 my-1">
           <Skeleton className="w-4 h-4 rounded flex-shrink-0 mt-0.5" />
           <div className="min-w-0 flex-1">
-            <Skeleton className="h-3 w-32 mb-1.5" />
-            <Skeleton className="h-3 w-full" />
+            <Skeleton className="h-4 w-32 mb-0.5" />
+            <Skeleton className="h-5 w-full" />
           </div>
         </div>
       ))}

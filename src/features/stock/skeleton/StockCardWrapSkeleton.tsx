@@ -9,13 +9,13 @@ export default function StockCardWrapSkeleton() {
           <Skeleton className="w-9 h-9 md:w-10 md:h-10 rounded-md flex-shrink-0" />
 
           <div className="min-w-0 flex-1">
-            <Skeleton className="h-4 w-24 mb-1.5" />
-            <Skeleton className="h-3 w-32" />
+            <Skeleton className="h-5 md:h-6 w-24 mb-0.5" />
+            <Skeleton className="h-4 w-32" />
           </div>
 
           <div className="text-right flex-shrink-0 mr-2">
-            <Skeleton className="h-4 w-16 mb-1.5 ml-auto" />
-            <Skeleton className="h-3 w-10 ml-auto" />
+            <Skeleton className="h-5 md:h-6 w-16 mb-0.5 ml-auto" />
+            <Skeleton className="h-4 md:h-5 w-10 ml-auto" />
           </div>
 
           <Skeleton className="hidden sm:block h-6 w-12 rounded-md flex-shrink-0" />
