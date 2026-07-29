@@ -52,6 +52,7 @@ export const useGetStockQuotesQuery = (stockCodes: string[] | null) => {
   return useAppQuery({
     queryKey: enabled ? STOCK_QUERY_KEYS.listQuote(stockCodes) : STOCK_QUERY_KEYS.listQuotes(),
     queryFn: () => getStockQuotes(stockCodes!),
+    // 5초마다 폴링
     refetchInterval: enabled ? 5000 : false,
     enabled,
     loading: false,
