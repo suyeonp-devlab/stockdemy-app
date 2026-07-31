@@ -4,7 +4,7 @@ import { NewsRequest } from "@/features/news/news.type";
 
 export const NEWS_QUERY_KEYS = {
   all: () => ["news"] as const,
-  lists: () => [...NEWS_QUERY_KEYS.all(), "list"] as const,
+  lists: () => [...NEWS_QUERY_KEYS.all(), "lists"] as const,
   list: (params: NewsRequest) => [...NEWS_QUERY_KEYS.lists(), params] as const,
   details: () => [...NEWS_QUERY_KEYS.all(), "details"] as const,
   detail: (id: number) => [...NEWS_QUERY_KEYS.details(), id] as const,
@@ -21,7 +21,6 @@ export const useGetNewsListQuery = (params: NewsRequest | null) => {
     queryKey: enabled ? NEWS_QUERY_KEYS.list(params) : NEWS_QUERY_KEYS.lists(),
     queryFn: () => getNewsList(params!),
     enabled,
-    loading: false,
   });
 };
 
@@ -34,7 +33,6 @@ export const useGetNewsDetailQuery = (id: number | null) => {
     queryKey: enabled ? NEWS_QUERY_KEYS.detail(id) : NEWS_QUERY_KEYS.details(),
     queryFn: () => getNewsDetail(id!),
     enabled,
-    loading: false,
   });
 };
 
@@ -44,7 +42,6 @@ export const useGetSentimentSummaryQuery = () => {
   return useAppQuery({
     queryKey: NEWS_QUERY_KEYS.summary(),
     queryFn: getSentimentSummary,
-    loading: false
   });
 };
 
@@ -54,6 +51,5 @@ export const useGetTopMentionsQuery = () => {
   return useAppQuery({
     queryKey: NEWS_QUERY_KEYS.mention(),
     queryFn: getTopMentions,
-    loading: false
   });
 };

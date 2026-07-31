@@ -3,11 +3,23 @@
 @theme {
   --color-navy: #1E3A5F;
   --animate-fadein: fadein 0.8s ease forwards;
+  --animate-flash-up: flash-up 1s ease-out;
+  --animate-flash-down: flash-down 1s ease-out;
 }
 
 @keyframes fadein {
   0% { opacity: 0; transform: translateY(16px); }
   100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes flash-up {
+  0% { background-color: rgba(248, 113, 113, 0.25); }
+  100% { background-color: transparent; }
+}
+
+@keyframes flash-down {
+  0% { background-color: rgba(56, 189, 248, 0.25); }
+  100% { background-color: transparent; }
 }
 
 html, body {
@@ -74,4 +86,16 @@ input:-webkit-autofill:focus {
 
 .scroll-fade-mask {
   mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
+}
+
+/*차트 툴팁 스타일*/
+.chart-tooltip-row {
+  display: flex;
+  align-items: center;
+  line-height: 1.5;
+}
+
+.chart-tooltip-row .label {
+  width: 40px;
+  flex-shrink: 0;
 }

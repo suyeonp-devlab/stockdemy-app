@@ -5,9 +5,9 @@ import Link from "next/link";
 import clsx from "clsx";
 import { ChevronDown, Loader2, Plus } from "lucide-react";
 import { useJournalsQuery, useRequestAiReviewMutation } from "@/features/journals/journals.query";
-import { useStockListQuery } from "@/features/stocks/stocks.query";
+import { useGetStockListQuery } from "@/features/stock/stock.query";
+import { StockRequest } from "@/features/stock/stock.type";
 import { JournalEntry, TradeType } from "@/features/journals/journals.type";
-import { Market } from "@/features/stocks/stocks.type";
 import Skeleton from "@/shared/components/skeleton/Skeleton";
 import TradeTypeBadge from "@/features/journals/components/TradeTypeBadge";
 
@@ -61,16 +61,22 @@ function computeRealizedProfit(journals: JournalEntry[]) {
     }, 0);
 }
 
-const formatPrice = (value: number, market: Market) =>
+const formatPrice = (value: number, market: string) =>
   market === "NASDAQ" ? `$${value.toFixed(2)}` : `${value.toLocaleString()}원`;
 
 // 기간 필터 기준 시각 (모듈 로드 시 1회 계산)
 const NOW = Date.now();
 
+// 필터 없이 전체 종목 조회용 request (임시, journals 쪽 데이터 조회 방식은 추후 재정리 예정)
+const ALL_STOCKS_REQUEST: StockRequest = {
+  market: "all", sector: "", stockName: "", favorite: false, topVolume: false, page: 1, pageSize: 9999,
+};
+
 export default function JournalListPage() {
 
   const { data: journals, isLoading } = useJournalsQuery();
-  const { data: stocks } = useStockListQuery();
+  const { data: stockResponse } = useGetStockListQuery(ALL_STOCKS_REQUEST);
+  const stocks = stockResponse?.items;
   const { mutate: requestAiReview, isPending: isRequestingAi, variables: requestingId } = useRequestAiReviewMutation();
 
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
@@ -123,7 +129,7 @@ export default function JournalListPage() {
   // 매수 종목의 평가손익 (현재가 대비)
   const getEvaluation = (entry: JournalEntry) => {
     if (entry.tradeType === "SELL") return null;
-    const currentPrice = stocks?.find((s) => s.code === entry.stockCode)?.price;
+    const currentPrice = stocks?.find((s) => s.stockCode === entry.stockCode)?.price;
     if (currentPrice === undefined) return null;
     const diff = (currentPrice - entry.price) * entry.quantity;
     const percent = ((currentPrice - entry.price) / entry.price) * 100;

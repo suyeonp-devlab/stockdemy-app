@@ -5,7 +5,7 @@ import { formatNumber } from "@/shared/utils/number";
 
 interface TopMentionsRowProps {
   mention: MentionRanking;
-  onStockClick: (stockName: string) => void;
+  onStockClick: (stockCode: string, stockName: string) => void;
 }
 
 export default function TopMentionsRow({ mention, onStockClick }: TopMentionsRowProps) {
@@ -13,7 +13,7 @@ export default function TopMentionsRow({ mention, onStockClick }: TopMentionsRow
   return (
     <div
       className="flex items-center justify-between py-px pr-2 -mr-2 hover:bg-gray-800/50 transition-colors cursor-pointer"
-      onClick={() => onStockClick(mention.stockName)}
+      onClick={() => onStockClick(mention.stockCode, mention.stockName)}
     >
       <div className="flex items-center gap-2 min-w-0">
         <div className="w-8 h-6 rounded flex items-center justify-center text-xs font-bold flex-shrink-0 bg-gray-700 text-gray-300">

@@ -38,7 +38,7 @@ export default function StockRankingCard() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-lg font-bold text-gray-100">거래량 상위</h2>
-        <Link href="/stocks" className="text-sm text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1">
+        <Link href="/stock" className="text-sm text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1">
           더보기<ChevronRight className="w-4 h-4" />
         </Link>
       </div>
@@ -75,7 +75,7 @@ export default function StockRankingCard() {
             ) : stocks?.map((stock, index) => (
               <tr
                 key={stock.code}
-                onClick={() => router.push(`/stocks/${stock.code}`)}
+                onClick={() => router.push(`/stock/${stock.code}`)}
                 className="border-b border-gray-800 last:border-0 hover:bg-gray-800 transition-colors cursor-pointer"
               >
                 <td className="px-4 py-3">
@@ -131,7 +131,7 @@ export default function StockRankingCard() {
         ) : stocks?.map((stock, index) => (
           <div
             key={stock.code}
-            onClick={() => router.push(`/stocks/${stock.code}`)}
+            onClick={() => router.push(`/stock/${stock.code}`)}
             className="py-3 px-2 cursor-pointer hover:bg-gray-900 rounded-xl transition-colors"
           >
             <span className={clsx("px-2 py-0.5 text-xs font-medium rounded-md mb-2 inline-block", sentimentStyle[stock.aiSentiment])}>

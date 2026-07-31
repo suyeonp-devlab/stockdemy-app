@@ -1,7 +1,7 @@
 // 뉴스 request
 export interface NewsRequest {
   category: string;
-  stockName: string;
+  keyword: string;
   favorite: boolean;
   page: number;
   pageSize: number;
@@ -55,6 +55,7 @@ export interface SentimentSummary {
 
 // 많이 언급된 종목
 export interface MentionRanking {
+  stockCode: string;
   stockName: string;
   count: number;
 }

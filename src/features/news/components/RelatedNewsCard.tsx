@@ -5,15 +5,17 @@ import RelatedNewsRow from "@/features/news/components/RelatedNewsRow";
 interface RelatedNewsCardProps {
   id: number;
   stockName: string;
+  stockCode: string;
 }
 
 export default function RelatedNewsCard({
   id,
-  stockName
+  stockName,
+  stockCode
 }: RelatedNewsCardProps) {
 
   const { data: relatedResponse, isLoading } = useGetNewsListQuery(
-    { category: "", stockName: stockName, favorite: false, page: 1, pageSize: 6 }
+    { category: "", keyword: stockCode, favorite: false, page: 1, pageSize: 6 }
   );
 
   // 연관 뉴스 (동일 종목 + 현재 뉴스 제외)

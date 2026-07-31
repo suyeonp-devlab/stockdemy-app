@@ -1,5 +1,3 @@
-import { Market } from "@/features/stocks/stocks.type";
-
 // 매매 유형
 export type TradeType = "BUY" | "SELL";
 
@@ -8,7 +6,7 @@ export interface JournalEntry {
   id: string;
   stockCode: string;
   stockName: string;
-  market: Market;
+  market: string;
   tradeType: TradeType;
   tradeDate: string;
   price: number;
@@ -22,7 +20,7 @@ export interface JournalEntry {
 export interface CreateJournalPayload {
   stockCode: string;
   stockName: string;
-  market: Market;
+  market: string;
   tradeType: TradeType;
   tradeDate: string;
   price: number;
