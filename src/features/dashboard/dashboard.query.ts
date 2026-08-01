@@ -13,7 +13,8 @@ export const useGetMarketIndicesQuery = () => {
   return useAppQuery({
     queryKey: DASHBOARD_QUERY_KEYS.indices(),
     queryFn: getMarketIndices,
-    loading: false
+    // 5초마다 폴링
+    refetchInterval: 5000,
   });
 };
 
@@ -23,6 +24,5 @@ export const useGetSectorSummariesQuery = () => {
   return useAppQuery({
     queryKey: DASHBOARD_QUERY_KEYS.sectors(),
     queryFn: getSectorSummaries,
-    loading: false
   });
 };

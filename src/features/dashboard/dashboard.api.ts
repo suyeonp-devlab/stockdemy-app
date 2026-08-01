@@ -3,10 +3,10 @@ import { MarketIndex, SectorSummary } from "@/features/dashboard/dashboard.type"
 
 // 시장 지수 및 환율 조회
 export const getMarketIndices = async () => {
-  return requestRequired<MarketIndex[]>({ method: "GET", url: "/api/market/indices" });
+  return requestRequired<MarketIndex[]>({ method: "GET", url: "/api/market/indices", meta: { skipErrorAlert: true } });
 }
 
 // 업종별 등락 요약 조회
 export const getSectorSummaries = async () => {
-  return requestRequired<SectorSummary[]>({ method: "GET", url: "/api/market/sectors" });
+  return requestRequired<SectorSummary[]>({ method: "GET", url: "/api/market/sectors", meta: { skipErrorAlert: true } });
 }
