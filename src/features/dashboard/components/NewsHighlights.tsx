@@ -1,51 +1,49 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import { Newspaper, ChevronRight } from "lucide-react";
-import { useNewsHighlightsQuery } from "@/features/dashboard/dashboard.query";
-import Skeleton from "@/shared/components/skeleton/Skeleton";
+import { useGetNewsListQuery } from "@/features/news/news.query";
+import NewsCardWrapSkeleton from "@/features/news/skeleton/NewsCardWrapSkeleton";
+import NewsCard from "@/features/news/components/NewsCard";
+
+const PAGE_SIZE = 5;
 
 export default function NewsHighlights() {
 
-  const { data: news, isLoading } = useNewsHighlightsQuery();
+  const { data: newsResponse, isLoading } = useGetNewsListQuery({
+    category: "", keyword: "", favorite: false, page: 1, pageSize: PAGE_SIZE,
+  });
+
+  const newsList = newsResponse?.items ?? [];
 
   return (
-    <div>
+    <div className="rounded-md border border-gray-800 p-6 pb-3.5">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-lg font-bold text-gray-100">주목할만한 뉴스</h2>
-        <Link href="/news" className="text-sm text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1">
-          더보기<ChevronRight className="w-4 h-4" />
-        </Link>
+        {!isLoading && newsList.length > 0 && (
+          <Link href="/news" className="text-sm text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1">
+            더보기<ChevronRight className="w-4 h-4" />
+          </Link>
+        )}
       </div>
 
-      {isLoading ? (
-        <div className="divide-y divide-gray-800/50">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="py-4 px-2 -mx-2">
-              <Skeleton className="h-3 w-16 mb-2" />
-              <Skeleton className="h-4 w-full mb-2" />
-              <Skeleton className="h-3 w-3/4" />
-            </div>
-          ))}
-        </div>
-      ) : !news?.length ? (
-        // 빈 상태
-        <div className="p-10 text-center">
-          <Newspaper className="w-10 h-10 text-gray-700 mx-auto mb-4" strokeWidth={1.5} />
+      {/* 조회중 */}
+      {isLoading && <NewsCardWrapSkeleton size={5} showLogo={false} />}
+
+      {/* 미존재 */}
+      {!isLoading && newsList.length === 0 && (
+        <div className="py-6 text-center">
+          <Newspaper className="w-14 h-14 text-gray-700 mx-auto mb-4" strokeWidth={1.5} />
           <p className="text-sm font-medium text-gray-400 mb-1">현재 수집된 뉴스가 없습니다.</p>
-          <p className="text-xs text-gray-600">새로운 뉴스가 들어오면 알려드릴게요.</p>
         </div>
-      ) : (
+      )}
+
+      {/* 존재 */}
+      {!isLoading && newsList.length > 0 && (
         <div className="divide-y divide-gray-800/50">
-          {news.map((item) => (
-            <div key={item.id} className="py-4 px-2 -mx-2 hover:bg-gray-900 rounded-xl transition-colors cursor-pointer">
-              <div className="flex items-center gap-2 mb-1.5">
-                <span className="text-xs text-gray-400">{item.stockName}</span>
-                <span className="text-xs text-gray-500 ml-auto">{item.publishedAt}</span>
-              </div>
-              <p className="text-sm font-medium text-gray-100 truncate mb-1.5">{item.title}</p>
-              <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">{item.summary}</p>
-            </div>
+          {newsList.map((news) => (
+            <NewsCard key={news.id} news={news} showLogo={false} className="!py-3" />
           ))}
         </div>
       )}

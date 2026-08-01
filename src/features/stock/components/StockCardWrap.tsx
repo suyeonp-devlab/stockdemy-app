@@ -54,7 +54,7 @@ export default function StockCardWrap({
               <StockCard
                 key={stock.stockCode}
                 stock={stock}
-                logoClassName={logoColors[index % logoColors.length]}
+                logoClassName={LOGO_COLORS[index % LOGO_COLORS.length]}
                 flashDirection={flashDirections.get(stock.stockCode)}
               />
             ))}
@@ -68,7 +68,7 @@ export default function StockCardWrap({
 }
 
 // 종목 로고 배경색 팔레트
-const logoColors = [
+export const LOGO_COLORS = [
   "bg-blue-800 text-blue-200",
   "bg-orange-800 text-orange-200",
   "bg-green-800 text-green-200",

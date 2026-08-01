@@ -1,6 +1,10 @@
 import Skeleton from "@/shared/components/skeleton/Skeleton";
 
-export default function StockCardWrapSkeleton() {
+interface StockCardWrapSkeletonProps {
+  showFavorite?: boolean;
+}
+
+export default function StockCardWrapSkeleton({ showFavorite = true }: StockCardWrapSkeletonProps) {
 
   return (
     <div className="divide-y divide-gray-800/50">
@@ -19,7 +23,7 @@ export default function StockCardWrapSkeleton() {
           </div>
 
           <Skeleton className="hidden sm:block h-6 w-12 rounded-md flex-shrink-0" />
-          <Skeleton className="w-8 h-8 rounded-md flex-shrink-0" />
+          {showFavorite && <Skeleton className="w-8 h-8 rounded-md flex-shrink-0" />}
         </div>
       ))}
     </div>

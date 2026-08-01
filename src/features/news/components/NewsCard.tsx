@@ -5,14 +5,19 @@ import { News } from "@/features/news/news.type";
 interface NewsCardProps {
   news: News;
   showLogo?: boolean;
+  className?: string;
 }
 
-export default function NewsCard({ news, showLogo = true }: NewsCardProps) {
+export default function NewsCard({
+  news,
+  showLogo = true,
+  className
+}: NewsCardProps) {
 
   return (
     <Link
       href={`/news/${news.id}`}
-      className="block py-5 px-3 -mx-3 hover:bg-gray-900/50 transition-colors cursor-pointer"
+      className={clsx("block py-5 px-3 -mx-3 hover:bg-gray-900/50 transition-colors cursor-pointer", className)}
     >
       <div className="flex items-center gap-2 mb-3 md:mb-2">
         {showLogo && (

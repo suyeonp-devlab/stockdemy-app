@@ -38,8 +38,8 @@ export default function StockDetailPage({ stockCode }: StockDetailPageProps) {
     <div className="max-w-screen-2xl mx-auto px-6 md:px-10 py-10">
       <div className="flex-1 flex-col items-start justify-between mb-8">
         <div className="flex justify-between mb-1">
-          <div>
-            <span className="md:text-2xl font-bold text-gray-100 mr-3">{fundamentals.stockName}</span>
+          <div className="flex items-center">
+            <span className="md:text-2xl font-bold text-gray-100 mr-2 md:mr-3">{fundamentals.stockName}</span>
             <span className={clsx("px-2 py-1 text-xs md:text-sm font-medium rounded-md", sentimentStyles[fundamentals.sentiment])}>
               {fundamentals.sentimentNm}
             </span>

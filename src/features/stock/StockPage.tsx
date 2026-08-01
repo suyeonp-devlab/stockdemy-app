@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { HelpCircle, Search } from "lucide-react";
 import { useGetStockListQuery } from "@/features/stock/stock.query";
@@ -36,6 +36,11 @@ export default function StockPage() {
 
   // 종목 조회 조건
   const searchQuery: StockRequest = formatStockSearchParams(params, PAGE_SIZE);
+
+  // 조회 조건 변경 → 스크롤 최상단 이동
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [searchQuery]);
 
   // 종목명 검색어
   const [keywordInput, setKeywordInput] = useState("");
