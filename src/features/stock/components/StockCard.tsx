@@ -10,7 +10,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useOverlay } from "@/system/overlay/useOverlay";
 import { buildLoginUrl } from "@/features/auth/auth.lib";
 import { formatPrice } from "@/shared/utils/number";
-import { FlashDirection } from "@/features/stock/components/StockCardWrap";
+import { FlashDirection } from "@/features/stock/hooks/useStockLiveQuotes";
 
 interface StockCardProps {
   stock: Stock
