@@ -29,7 +29,7 @@ export default function NewsHighlights() {
       </div>
 
       {/* 조회중 */}
-      {isLoading && <NewsCardWrapSkeleton size={5} showLogo={false} />}
+      {isLoading && <NewsCardWrapSkeleton size={5} showLogo={false} compact={true} />}
 
       {/* 미존재 */}
       {!isLoading && newsList.length === 0 && (

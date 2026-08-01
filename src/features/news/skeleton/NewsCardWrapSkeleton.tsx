@@ -3,17 +3,19 @@ import Skeleton from "@/shared/components/skeleton/Skeleton";
 interface NewsCardWrapSkeletonProps {
   showLogo?: boolean;
   size?: number;
+  compact?: boolean;
 }
 
 export default function NewsCardWrapSkeleton({
   showLogo = true,
   size = 10,
+  compact = false,
 }: NewsCardWrapSkeletonProps) {
 
   return (
     <div className="divide-y divide-gray-800/50">
       {Array.from({ length: size }).map((_, i) => (
-        <div key={i} className="py-5 px-3 -mx-3">
+        <div key={i} className={compact ? "py-3 px-3 -mx-3" : "py-5 px-3 -mx-3"}>
           {/* 메타정보 */}
           <div className="flex items-center gap-2 mb-3 md:mb-2">
             {showLogo && <Skeleton className="w-8 h-6 rounded flex-shrink-0" />}
