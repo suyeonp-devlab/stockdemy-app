@@ -24,5 +24,7 @@ export const useGetSectorSummariesQuery = () => {
   return useAppQuery({
     queryKey: DASHBOARD_QUERY_KEYS.sectors(),
     queryFn: getSectorSummaries,
+    // 15초마다 폴링
+    refetchInterval: 15000,
   });
 };
