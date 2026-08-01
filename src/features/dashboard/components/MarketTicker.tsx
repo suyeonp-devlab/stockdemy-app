@@ -2,7 +2,7 @@
 
 import { useGetMarketIndicesQuery } from "@/features/dashboard/dashboard.query";
 import MarketTickerSkeleton from "@/features/dashboard/skeleton/MarketTickerSkeleton";
-import { formatNumber } from "@/shared/utils/number";
+import MarketTickerRow from "@/features/dashboard/components/MarketTickerRow";
 
 export default function MarketTicker() {
 
@@ -15,17 +15,13 @@ export default function MarketTicker() {
   if (indices.length === 0) return null;
 
   return (
-    <div className="bg-gray-900 border-b border-gray-800">
-      <div className="max-w-screen-2xl mx-auto px-6 md:px-10 py-3 flex items-center gap-7 overflow-x-auto scrollbar-hide scroll-fade-mask">
-        {indices.map((index) => (
-          <div key={index.marketCode} className="flex items-center gap-2 whitespace-nowrap flex-shrink-0">
-            <span className="text-sm font-medium text-gray-400">{index.marketName}</span>
-            <span className="text-sm font-semibold text-gray-100">{formatNumber(index.indexValue)}</span>
-            <span className={`text-sm font-medium tabular-nums ${index.changePercent >= 0 ? "text-red-400" : "text-sky-400"}`}>
-              {index.changePercent >= 0 ? "▲" : "▼"} {Math.abs(index.changePercent)}%
-            </span>
-          </div>
-        ))}
+    <div className="bg-gray-900 border-b border-gray-800 overflow-hidden">
+      <div className="max-w-screen-2xl mx-auto px-6 md:px-10 py-3 scroll-fade-mask">
+        {/* 모바일: 자동 스크롤 (두벌 이어붙여 사용) / 데스크탑: 정적 나열 */}
+        <div className="flex w-max gap-7 animate-marquee md:animate-none hover:[animation-play-state:paused]">
+          {indices.map((index) => <MarketTickerRow key={`${index.marketCode}_a`} index={index} />)}
+          {indices.map((index) => <MarketTickerRow key={`${index.marketCode}_b`} index={index} className="md:hidden" />)}
+        </div>
       </div>
     </div>
   );
