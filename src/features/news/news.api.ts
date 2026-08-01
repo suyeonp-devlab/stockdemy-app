@@ -13,10 +13,10 @@ export const getNewsDetail = async (id: number) => {
 
 // 오늘의 시장 평가 조회
 export const getSentimentSummary = async () => {
-  return requestRequired<SentimentSummary>({ method: "GET", url: "/api/news/sentiment-summary" });
+  return requestRequired<SentimentSummary>({ method: "GET", url: "/api/news/sentiment-summary", meta: { skipErrorAlert: true } });
 }
 
 // 많이 언급된 종목 조회
 export const getTopMentions = async () => {
-  return requestRequired<MentionRanking[]>({ method: "GET", url: "/api/news/top-mentions" });
+  return requestRequired<MentionRanking[]>({ method: "GET", url: "/api/news/top-mentions", meta: { skipErrorAlert: true } });
 }

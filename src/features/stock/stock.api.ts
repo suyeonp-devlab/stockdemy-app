@@ -18,7 +18,7 @@ export const getStockList = async (params: StockRequest) => {
 
 // 종목 목록 실시간 시세 조회
 export const getStockQuotes = async (stockCodes: string[]) => {
-  return requestRequired<StockQuote[]>({ method: "GET", url: "/api/stocks/quotes", params: { codes: stockCodes.join(",") } });
+  return requestRequired<StockQuote[]>({ method: "GET", url: "/api/stocks/quotes", params: { codes: stockCodes.join(",") }, meta: { skipErrorAlert: true } });
 }
 
 // 종목 기초데이터 조회
@@ -43,7 +43,7 @@ export const getTodayQuote = async (stockCode: string) => {
 
 // 오늘의 공시 조회
 export const getDisclosureList = async (stockCode: string) => {
-  return requestRequired<Disclosure[]>({ method: "GET", url: "/api/stocks/disclosures", params: { stockCode } });
+  return requestRequired<Disclosure[]>({ method: "GET", url: "/api/stocks/disclosures", params: { stockCode }, meta: { skipErrorAlert: true } });
 }
 
 // 관심종목 등록 및 해제
