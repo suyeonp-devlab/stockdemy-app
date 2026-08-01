@@ -30,7 +30,7 @@ export default function NewsCard({
           </>
         )}
         <span className="text-sm text-gray-600">{news.publishedAt}</span>
-        <span className={clsx("px-2 py-0.5 text-sm font-medium rounded-md ml-auto", sentimentStyles[news.sentiment])}>
+        <span className={clsx("px-2 py-0.5 text-xs md:text-sm font-medium rounded-md ml-auto", sentimentStyles[news.sentiment])}>
           {news.sentimentNm}
         </span>
       </div>
