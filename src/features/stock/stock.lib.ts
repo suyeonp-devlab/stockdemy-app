@@ -59,9 +59,9 @@ export const toChartBar = (bar: PriceBar | MinuteBar): ChartBar => ({
 });
 
 // 이동평균선 계산
-export const computeMovingAverage = (bars: ChartBar[], period: number): LineData<Time>[] => {
+export const computeMovingAverage = (bars: ChartBar[], period: number): LineData[] => {
 
-  const points: (LineData<Time> | null)[] = bars.map((bar, index) => {
+  const points: (LineData | null)[] = bars.map((bar, index) => {
 
     if (index < period - 1) return null;
 
