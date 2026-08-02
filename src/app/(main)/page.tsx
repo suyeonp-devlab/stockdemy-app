@@ -1,5 +1,5 @@
-import Dashboard from "@/features/dashboard/Dashboard";
+import DashboardPage from "@/features/dashboard/DashboardPage";
 
-export default function MainPage() {
-  return <Dashboard />;
+export default function DashboardRoutePage() {
+  return <DashboardPage />;
 }

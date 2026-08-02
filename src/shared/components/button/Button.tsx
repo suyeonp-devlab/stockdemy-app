@@ -47,6 +47,6 @@ const variantStyles: Record<ButtonVariant, string> = {
 const widthStyles: Record<ButtonWidth, string> = {
   sm: "w-20",
   md: "w-32",
-  lg: "w-48",
+  lg: "w-70",
   full: "w-full",
 };

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import clsx from "clsx";
 
 type FilterVariant = "primary" | "sub";
@@ -26,6 +27,13 @@ export default function FilterTabs({
   className
 }: FilterTabsProps) {
 
+  // 선택된 버튼이 가로 스크롤 밖에 위치해 있으면 보이는 위치로 이동
+  const activeRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    activeRef.current?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+  }, [value]);
+
   return (
     <div className={clsx("flex gap-2 flex-nowrap overflow-x-auto scrollbar-hide scroll-fade-mask pb-1", className)}>
       {options.map((option) => {
@@ -34,6 +42,7 @@ export default function FilterTabs({
         return (
           <button
             key={option.value}
+            ref={isActive ? activeRef : undefined}
             onClick={() => onChange(option.value)}
             className={clsx(
               "whitespace-nowrap transition-colors flex items-center gap-1",

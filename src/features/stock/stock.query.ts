@@ -40,7 +40,6 @@ export const useGetStockListQuery = (params: StockRequest | null) => {
     queryKey: enabled ? STOCK_QUERY_KEYS.list(params) : STOCK_QUERY_KEYS.lists(),
     queryFn: () => getStockList(params!),
     enabled,
-    loading: false,
   });
 };
 
@@ -55,7 +54,6 @@ export const useGetStockQuotesQuery = (stockCodes: string[] | null) => {
     // 5초마다 폴링
     refetchInterval: enabled ? 5000 : false,
     enabled,
-    loading: false,
   });
 };
 
@@ -68,7 +66,6 @@ export const useGetStockFundamentalsQuery = (stockCode: string | null) => {
     queryKey: enabled ? STOCK_QUERY_KEYS.detail(stockCode) : STOCK_QUERY_KEYS.details(),
     queryFn: () => getStockFundamentals(stockCode!),
     enabled,
-    loading: false
   });
 };
 
@@ -81,7 +78,6 @@ export const useGetPriceBarListQuery = (stockCode: string | null) => {
     queryKey: enabled ? STOCK_QUERY_KEYS.priceBar(stockCode) : STOCK_QUERY_KEYS.priceBars(),
     queryFn: () => getPriceBarList(stockCode!),
     enabled,
-    loading: false
   });
 };
 
@@ -94,7 +90,6 @@ export const useGetMinuteBarListQuery = (stockCode: string | null) => {
     queryKey: enabled ? STOCK_QUERY_KEYS.minuteBar(stockCode) : STOCK_QUERY_KEYS.minuteBars(),
     queryFn: () => getMinuteBarList(stockCode!),
     enabled,
-    loading: false
   });
 };
 
@@ -109,7 +104,6 @@ export const useGetTodayQuoteQuery = (stockCode: string | null) => {
     // 5초마다 폴링 → 장마감 시 자동 정지
     refetchInterval: (query) => query.state.data?.isMarketOpen ? 5000 : false,
     enabled,
-    loading: false,
   });
 };
 
@@ -119,7 +113,6 @@ export const useGetDisclosureListQuery = (stockCode?: string | null) => {
   return useAppQuery({
     queryKey: stockCode ? STOCK_QUERY_KEYS.disclosure(stockCode) : STOCK_QUERY_KEYS.disclosures(),
     queryFn: () => getDisclosureList(stockCode ?? ""),
-    loading: false
   });
 };
 

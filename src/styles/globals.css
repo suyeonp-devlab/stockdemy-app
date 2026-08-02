@@ -5,6 +5,7 @@
   --animate-fadein: fadein 0.8s ease forwards;
   --animate-flash-up: flash-up 1s ease-out;
   --animate-flash-down: flash-down 1s ease-out;
+  --animate-marquee: marquee 25s linear infinite;
 }
 
 @keyframes fadein {
@@ -20,6 +21,11 @@
 @keyframes flash-down {
   0% { background-color: rgba(56, 189, 248, 0.25); }
   100% { background-color: transparent; }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 html, body {

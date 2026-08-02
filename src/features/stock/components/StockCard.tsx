@@ -10,18 +10,20 @@ import { usePathname, useRouter } from "next/navigation";
 import { useOverlay } from "@/system/overlay/useOverlay";
 import { buildLoginUrl } from "@/features/auth/auth.lib";
 import { formatPrice } from "@/shared/utils/number";
-import { FlashDirection } from "@/features/stock/components/StockCardWrap";
+import { FlashDirection } from "@/features/stock/hooks/useStockLiveQuotes";
 
 interface StockCardProps {
   stock: Stock
   logoClassName: string;
   flashDirection?: FlashDirection;
+  showFavorite?: boolean;
 }
 
 export default function StockCard({
   stock,
   logoClassName,
-  flashDirection
+  flashDirection,
+  showFavorite = true
 }: StockCardProps) {
 
   const router = useRouter();
@@ -78,13 +80,15 @@ export default function StockCard({
         {stock.sentimentNm}
       </span>
 
-      <IconButton
-        icon={<Star size="20" fill={stock.favorite ? "currentColor" : "none"} />}
-        size="md"
-        aria-label="즐겨찾기"
-        onClick={handleFavorite}
-        className={stock.favorite ? "!text-blue-400" : "text-gray-600 hover:!text-blue-400 transition-colors"}
-      />
+      {showFavorite && (
+        <IconButton
+          icon={<Star size="20" fill={stock.favorite ? "currentColor" : "none"} />}
+          size="md"
+          aria-label="즐겨찾기"
+          onClick={handleFavorite}
+          className={stock.favorite ? "!text-blue-400" : "text-gray-600 hover:!text-blue-400 transition-colors"}
+        />
+      )}
     </Link>
   );
 }
