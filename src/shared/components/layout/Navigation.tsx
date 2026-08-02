@@ -55,5 +55,5 @@ const NAV_ITEMS = [
   { label: "홈", href: "/", onlyUser: false },
   { label: "종목 검색", href: "/stock", onlyUser: false },
   { label: "뉴스 & AI 분석", href: "/news", onlyUser: false },
-  { label: "주식 일지", href: "/journals", onlyUser: true },
+  { label: "주식 일지", href: "/journal", onlyUser: true },
 ];

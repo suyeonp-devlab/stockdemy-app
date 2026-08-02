@@ -22,13 +22,13 @@ export default function JournalCta() {
       </p>
 
       {isLoggedIn &&
-        <Button variant="primary" width="full" onClick={() => router.replace("/journals")}>
-          주식일지 바로가기
+        <Button variant="primary" width="lg" onClick={() => router.replace("/journal")}>
+          주식 일지 바로가기
         </Button>
       }
 
       {!isLoggedIn &&
-        <Button variant="primary" width="lg" onClick={() => router.replace(buildLoginUrl("/journals"))}>
+        <Button variant="primary" width="lg" onClick={() => router.replace(buildLoginUrl("/journal"))}>
           로그인 후 시작하기
         </Button>
       }

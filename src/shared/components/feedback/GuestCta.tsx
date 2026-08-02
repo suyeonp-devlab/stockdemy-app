@@ -36,5 +36,5 @@ export default function GuestCta({ href }: GuestCtaProps) {
 
 // href 종류에 따른 문구
 const hrefTexts: Record<string, { main: string, sub: string}> = {
-  "/journals": { main: "나의 매매를 AI로 복기해보세요", sub: "매수·매도 기록을 바탕으로\nAI가 당시 시장 흐름을 분석해 드려요." }
+  "/journal": { main: "나의 매매를 AI로 복기해보세요", sub: "매수·매도 기록을 바탕으로\nAI가 당시 시장 흐름을 분석해 드려요." }
 }
