@@ -32,7 +32,7 @@ export default function StockCard({
 
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
-  const { mutate: toggleFavorite } = useToggleStockFavoriteMutation();
+  const { mutateAsync: toggleFavorite } = useToggleStockFavoriteMutation();
 
   // 즐겨찾기
   const handleFavorite = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -46,7 +46,7 @@ export default function StockCard({
       return;
     }
 
-    void toggleFavorite({ stockCode: stock.stockCode, favorite: !stock.favorite });
+    await toggleFavorite({ stockCode: stock.stockCode, favorite: !stock.favorite });
   }
 
   return (
