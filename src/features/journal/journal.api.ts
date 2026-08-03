@@ -1,9 +1,20 @@
 import { request, requestRequired } from "@/shared/lib/axios";
-import { CreateJournalRequest, Journal, UpdateJournalRequest } from "@/features/journal/journal.type";
+import {
+  CreateJournalRequest,
+  Journal,
+  JournalRequest,
+  JournalResponse,
+  UpdateJournalRequest
+} from "@/features/journal/journal.type";
 
 // 주식 일지 목록 조회
-export const getJournalList = async () => {
-  return requestRequired<Journal[]>({ method: "GET", url: "/api/journals" });
+export const getJournalList = async (params: JournalRequest) => {
+  return requestRequired<JournalResponse>({ method: "GET", url: "/api/journals", params });
+}
+
+// 주식 일지 단건 조회
+export const getJournal = async (id: string) => {
+  return requestRequired<Journal>({ method: "GET", url: `/api/journals/${id}` });
 }
 
 // 주식 일지 생성

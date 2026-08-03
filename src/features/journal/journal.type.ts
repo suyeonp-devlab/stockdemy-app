@@ -1,4 +1,18 @@
-// 주식 일지
+// 주식 일지 request
+export interface JournalRequest {
+  status: string;
+  page: number;
+  pageSize: number;
+}
+
+// 주식 일지 response
+export interface JournalResponse {
+  totalCount: number;
+  totalPages: number;
+  items: Journal[];
+}
+
+// 주식 일지 항목
 export interface Journal {
   id: string;
   stockCode: string;
@@ -7,6 +21,8 @@ export interface Journal {
   statusNm: string;
   market: string;
   marketNm: string;
+  section: string;
+  sectionNm: string;
   tradeType: string;
   tradeTypeNm: string;
   tradeDate: string;
