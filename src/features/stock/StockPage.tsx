@@ -53,12 +53,6 @@ export default function StockPage() {
   const markets = stockMarkets?.items ?? [];
   const sectors = stockSectors?.items ?? [];
 
-  // 시장 필터 옵션
-  const marketOptions = toFilterOptions(markets);
-
-  // 업종 필터 옵션
-  const sectorOptions = toFilterOptions(sectors);
-
   // 종목 조회 조건 변경 (단일필드)
   const handleSearchChange = <K extends keyof StockURLSearchParams>(key: K, value: StockURLSearchParams[K]) => {
     const next: StockURLSearchParams = { ...params, [key]: value, page: "1" };
@@ -120,7 +114,7 @@ export default function StockPage() {
             isMarketsLoading ?
             <SubFilterSkeleton /> :
             <FilterTabs
-              options={marketOptions}
+              options={toFilterOptions(markets)}
               value={params.market ?? ""}
               onChange={(value) => handleSearchChange("market", value)}
               variant="sub"
@@ -133,7 +127,7 @@ export default function StockPage() {
             isSectorsLoading ?
             <SubFilterSkeleton /> :
             <FilterTabs
-              options={sectorOptions}
+              options={toFilterOptions(sectors)}
               value={params.sector ?? ""}
               onChange={(value) => handleSearchChange("sector", value)}
               variant="sub"

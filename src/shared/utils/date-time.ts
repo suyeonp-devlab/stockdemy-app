@@ -86,3 +86,14 @@ export const toEpochSeconds = (date: string, time: string): number => {
 
   return Math.floor(datetime.getTime() / 1000);
 };
+
+/**
+ * 오늘 날짜를 원하는 포맷으로 변환
+ * @param format 출력 포맷
+ * @example getToday("yyyy.MM.dd") → "2026.08.04"
+ * @example getToday("yyyy-MM-dd HH:mm") → "2026-08-04 13:30"
+ */
+export const getToday = (format = "yyyy-MM-dd"): string => {
+  const now = new Date();
+  return formatDate(now, format);
+};

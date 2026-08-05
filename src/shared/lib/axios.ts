@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequ
 import { overlayBridge } from "@/system/overlay/overlay-bridge";
 import { ApiRequestMeta, ApiResponse } from "@/shared/types/api.type";
 import { useAuthStore } from "@/shared/store/auth.store";
+import { getQueryClient } from "@/shared/lib/query-client";
 
 declare module "axios" {
   interface AxiosRequestConfig { meta?: ApiRequestMeta; }
@@ -74,6 +75,7 @@ axiosInstance.interceptors.response.use(
       } catch {
         // refresh 실패 → 세션 만료로 간주
         useAuthStore.getState().logout();
+        getQueryClient().clear();
         return Promise.reject(error);
       }
     }

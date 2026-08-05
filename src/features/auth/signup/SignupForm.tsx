@@ -12,6 +12,7 @@ import FormField from "@/shared/components/form/FormField";
 import Input from "@/shared/components/form/Input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   useGoogleSignupMutation,
   useSendSignupCodeMutation,
@@ -27,6 +28,7 @@ export default function SignupForm() {
 
   const router = useRouter();
   const { alert } = useOverlay();
+  const queryClient = useQueryClient();
 
   const { register, handleSubmit, getValues, trigger, formState: { errors, isSubmitting } } = useForm<SIGNUP_SCHEMA_TYPE>({
     resolver: zodResolver(SIGNUP_SCHEMA),
@@ -68,6 +70,7 @@ export default function SignupForm() {
     const result = await signup(data);
     await alert("회원가입이 완료되었습니다.");
     setAccessToken(result.accessToken);
+    void queryClient.invalidateQueries();
     router.replace("/");
   };
 
@@ -77,6 +80,7 @@ export default function SignupForm() {
       const result = await googleSignup({ accessToken: tokenResponse.access_token });
       await alert("회원가입이 완료되었습니다.");
       setAccessToken(result.accessToken);
+      void queryClient.invalidateQueries();
       router.replace("/");
     },
   });
