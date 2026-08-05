@@ -34,6 +34,18 @@ export interface ResetPasswordRequest {
   passwordConfirm: string;
 }
 
+// 회원 탈퇴 request
+export interface WithdrawRequest {
+  password: string;
+}
+
+// 비밀번호 변경 request
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+  newPasswordConfirm: string;
+}
+
 // 인증 토큰 response
 export interface AuthTokenResponse {
   accessToken: string;
@@ -42,4 +54,5 @@ export interface AuthTokenResponse {
 // 내 정보 response
 export interface MeResponse {
   email: string;
+  createdAt: string;
 }
