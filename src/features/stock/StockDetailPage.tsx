@@ -6,7 +6,7 @@ import { useGetStockFundamentalsQuery, useGetTodayQuoteQuery } from "@/features/
 import StockDetailSkeleton from "@/features/stock/skeleton/StockDetailSkeleton";
 import NotFoundFeedback from "@/shared/components/feedback/NotFoundFeedback";
 import { formatPrice } from "@/shared/utils/number";
-import UnderlineTab, { UnderlineTabOption } from "@/shared/components/tab/UnderlineTab";
+import UnderlineTabs, { UnderlineTabOption } from "@/shared/components/tab/UnderlineTabs";
 import StockInfoCard from "@/features/stock/components/StockInfoCard";
 import NewsDisclosureCard from "@/features/stock/components/NewsDisclosureCard";
 import StockChart from "@/features/stock/components/StockChart";
@@ -60,7 +60,7 @@ export default function StockDetailPage({ stockCode }: StockDetailPageProps) {
       </div>
 
       {/* 밑줄 탭 */}
-      <UnderlineTab options={TABS} value={tab} onChange={(value) => setTab(value as Tab)} />
+      <UnderlineTabs options={TABS} value={tab} onChange={(value) => setTab(value as Tab)} />
 
       {tab === "CHART" && <StockChart stockCode={fundamentals.stockCode} todayQuote={todayQuote} aiComment={fundamentals.aiComment} />}
       {tab === "NEWS" && <NewsDisclosureCard stockCode={fundamentals.stockCode} />}

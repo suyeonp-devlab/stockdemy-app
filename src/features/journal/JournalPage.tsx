@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import UnderlineTab, { UnderlineTabOption } from "@/shared/components/tab/UnderlineTab";
+import UnderlineTabs, { UnderlineTabOption } from "@/shared/components/tab/UnderlineTabs";
 import JournalListView from "@/features/journal/components/JournalListView";
 import JournalWriteView from "@/features/journal/components/JournalWriteView";
 import { JournalRequest } from "@/features/journal/journal.type";
@@ -67,7 +67,7 @@ export default function JournalPage() {
       </div>
 
       {/* 밑줄 탭 */}
-      <UnderlineTab options={TABS} value={tab} onChange={handleTabChange} />
+      <UnderlineTabs options={TABS} value={tab} onChange={handleTabChange} />
 
       {/* 주식 일지 목록 */}
       <JournalListView
