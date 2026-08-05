@@ -7,6 +7,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { FcGoogle } from "react-icons/fc";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import Button from "@/shared/components/button/Button";
 import Checkbox from "@/shared/components/form/Checkbox";
 import FormField from "@/shared/components/form/FormField";
@@ -26,6 +27,7 @@ export default function LoginForm() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
+  const queryClient = useQueryClient();
 
   const returnUrl = searchParams.get("returnUrl");
   const redirectTo = isSafeReturnUrl(returnUrl) ? returnUrl : "/";
@@ -57,6 +59,7 @@ export default function LoginForm() {
     saveRememberedEmail(data.email);
     const result = await login(data);
     setAccessToken(result.accessToken);
+    void queryClient.invalidateQueries();
     setLocalStorageItem(LAST_LOGIN_METHOD_KEY, "email");
     router.replace(redirectTo);
   };
@@ -66,6 +69,7 @@ export default function LoginForm() {
     onSuccess: async (tokenResponse) => {
       const result = await googleLogin({ accessToken: tokenResponse.access_token });
       setAccessToken(result.accessToken);
+      void queryClient.invalidateQueries();
       setLocalStorageItem(LAST_LOGIN_METHOD_KEY, "google");
       router.replace(redirectTo);
     },
