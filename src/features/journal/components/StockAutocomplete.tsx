@@ -28,10 +28,11 @@ export default function StockAutocomplete({ isLoading, stockList, onSelect }: St
 
       {/* 존재 */}
       {!isLoading && stockList.length > 0 && stockList.map((stock) => (
-        <div
+        <button
           key={stock.stockCode}
+          type="button"
           onClick={() => onSelect(stock)}
-          className="px-4 py-4 hover:bg-gray-700 transition-colors border-b border-gray-700 last:border-0"
+          className="w-full text-left px-4 py-4 hover:bg-gray-700 transition-colors border-b border-gray-700 last:border-0"
         >
           <div className="text-sm font-medium text-gray-100 mb-1">
             {stock.stockName}
@@ -39,7 +40,7 @@ export default function StockAutocomplete({ isLoading, stockList, onSelect }: St
           <div className="text-xs text-gray-500">
             {stock.stockCode} · {stock.marketNm} · {stock.sectorNm}
           </div>
-        </div>
+        </button>
       ))}
     </div>
   );

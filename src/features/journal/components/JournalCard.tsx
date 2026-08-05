@@ -27,9 +27,10 @@ export default function JournalCard({ journal, onEdit }: JournalCardProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <div
+      <button
+        type="button"
         onClick={handleClick}
-        className="flex items-center gap-3 md:gap-4 py-3 px-2 -mx-2 cursor-pointer hover:bg-gray-900 transition-colors"
+        className="w-full text-left flex items-center gap-3 md:gap-4 py-3 px-2 -mx-2 cursor-pointer hover:bg-gray-900 transition-colors"
       >
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2.5 mb-1.5">
@@ -50,7 +51,7 @@ export default function JournalCard({ journal, onEdit }: JournalCardProps) {
           <div className="mb-0.5 min-w-10">{journal.quantity}주</div>
           <div className={clsx("mb-1.5 w-22 md:text-base", statusStyles[journal.status])}>{journal.statusNm}</div>
         </div>
-      </div>
+      </button>
 
       {/* 펼침 상태 */}
       {isExpanded && (
