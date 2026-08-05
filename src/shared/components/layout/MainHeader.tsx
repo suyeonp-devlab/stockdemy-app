@@ -4,8 +4,11 @@ import Link from "next/link";
 import { useGetMeQuery, useLogoutMutation } from "@/features/auth/auth.query";
 import { useAuthStore } from "@/shared/store/auth.store";
 import Navigation from "@/shared/components/layout/Navigation";
+import { useRouter } from "next/navigation";
 
 export default function MainHeader() {
+
+  const router = useRouter();
 
   // 로그인 정보
   const { isLoading: isMeLoading } = useGetMeQuery();
@@ -15,6 +18,7 @@ export default function MainHeader() {
   // 로그아웃
   const handleLogout = async () => {
     await logout();
+    router.replace("/login");
   };
 
   return (

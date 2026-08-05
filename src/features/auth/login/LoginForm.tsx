@@ -56,11 +56,14 @@ export default function LoginForm() {
 
   // 로그인
   const handleLogin = async (data: LOGIN_SCHEMA_TYPE) => {
+
     saveRememberedEmail(data.email);
+
     const result = await login(data);
     setAccessToken(result.accessToken);
     void queryClient.invalidateQueries();
     setLocalStorageItem(LAST_LOGIN_METHOD_KEY, "email");
+
     router.replace(redirectTo);
   };
 
@@ -71,6 +74,7 @@ export default function LoginForm() {
       setAccessToken(result.accessToken);
       void queryClient.invalidateQueries();
       setLocalStorageItem(LAST_LOGIN_METHOD_KEY, "google");
+
       router.replace(redirectTo);
     },
   });

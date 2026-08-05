@@ -11,7 +11,7 @@ interface ConfirmProps {
 export default function Confirm({ message, onConfirm, onCancel }: ConfirmProps) {
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
+    <div className="fixed inset-0 z-51 flex items-center justify-center bg-black/60 px-4">
       <div className="w-full max-w-sm rounded-xl bg-gray-900 border border-gray-800 p-6 shadow-2xl animate-fadein">
         <p className="text-sm text-gray-200 leading-relaxed text-center whitespace-pre-line">
           {message}
