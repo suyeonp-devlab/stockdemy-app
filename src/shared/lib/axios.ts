@@ -52,13 +52,15 @@ axiosInstance.interceptors.response.use(
     // refresh 시도 조건
     // 1) 401 에러
     // 2) 기존 요청 정보 존재
-    // 3) refresh를 시도하지 않은 요청
+    // 3) refresh 시도하지 않은 요청
     // 4) refresh 제외 요청이 아닐 것
+    // 5) 현재 세션에서 refresh 실패한 적 없을 것
     const shouldRefresh =
       status === 401 &&
       !!originalRequest &&
       !originalRequest._retry &&
-      !originalRequest.meta?.skipAuthRefresh;
+      !originalRequest.meta?.skipAuthRefresh &&
+      !useAuthStore.getState().sessionExpired;
 
     if (shouldRefresh) {
       originalRequest._retry = true;
@@ -75,7 +77,7 @@ axiosInstance.interceptors.response.use(
       } catch {
         // refresh 실패 → 세션 만료로 간주
         useAuthStore.getState().logout();
-        getQueryClient().clear();
+        void getQueryClient().invalidateQueries();
         return Promise.reject(error);
       }
     }
