@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: StockDetailRouteProps): Promi
   return {
     title,
     description,
-    openGraph: { title: title, description, type: "website" },
+    openGraph: { title: title, description, images: ["/images/og-image.png"], type: "website" },
   };
 }
 

@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Stock } from "@/features/stock/stock.type";
 import { Loader2 } from "lucide-react";

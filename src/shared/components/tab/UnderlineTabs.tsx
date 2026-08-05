@@ -1,3 +1,5 @@
+"use client";
+
 import clsx from "clsx";
 
 export interface UnderlineTabOption {
@@ -5,19 +7,19 @@ export interface UnderlineTabOption {
   value: string;
 }
 
-interface UnderlineTabProps {
+interface UnderlineTabsProps {
   options: UnderlineTabOption[];
   value: string;
   onChange: (value: string) => void;
   className?: string;
 }
 
-export default function UnderlineTab({
+export default function UnderlineTabs({
   options,
   value,
   onChange,
   className
-}: UnderlineTabProps) {
+}: UnderlineTabsProps) {
 
   return (
     <div className={clsx("flex border-b border-gray-800 mb-6", className)}>

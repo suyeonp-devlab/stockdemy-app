@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: NewsDetailRouteProps): Promis
   return {
     title: news.title,
     description,
-    openGraph: { title: news.title, description, type: "article" },
+    openGraph: { title: news.title, description, images: ["/images/og-image.png"], type: "article" },
   };
 }
 
