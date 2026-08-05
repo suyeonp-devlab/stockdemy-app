@@ -39,7 +39,7 @@ export default function JournalCard({ journal, onEdit }: JournalCardProps) {
             <span className="font-medium text-gray-100 text-sm md:text-base truncate">{journal.stockName}</span>
           </div>
           <div className="text-xs md:text-sm text-gray-500 tabular-nums truncate mb-0.5">
-            {journal.stockCode} · {journal.marketNm} · {journal.sectionNm}
+            {journal.stockCode} · {journal.marketNm} · {journal.sectorNm}
           </div>
           <div className="text-xs md:text-sm text-gray-600 tabular-nums">
             거래일시: {formatDate(journalDate, journal.tradeTime ? "yyyy-MM-dd HH:mm:ss" : "yyyy-MM-dd")}

@@ -21,8 +21,8 @@ export interface Journal {
   statusNm: string;
   market: string;
   marketNm: string;
-  section: string;
-  sectionNm: string;
+  sector: string;
+  sectorNm: string;
   tradeType: string;
   tradeTypeNm: string;
   tradeDate: string;
@@ -39,6 +39,7 @@ export interface CreateJournalRequest {
   stockCode: string;
   stockName: string;
   market: string;
+  sector: string;
   tradeType: string;
   tradeDate: string;
   tradeTime: string | null;

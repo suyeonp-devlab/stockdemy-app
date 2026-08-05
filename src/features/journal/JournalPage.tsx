@@ -4,6 +4,10 @@ import { useEffect, useState } from "react";
 import UnderlineTab, { UnderlineTabOption } from "@/shared/components/tab/UnderlineTab";
 import JournalListView from "@/features/journal/components/JournalListView";
 import JournalWriteView from "@/features/journal/components/JournalWriteView";
+import { JournalRequest } from "@/features/journal/journal.type";
+import { useGetJournalListQuery } from "@/features/journal/journal.query";
+
+const PAGE_SIZE = 10;
 
 type Tab = "LIST" | "WRITE";
 
@@ -12,13 +16,29 @@ export default function JournalPage() {
   // 선택한 탭
   const [tab, setTab] = useState<Tab>("LIST");
 
-  // 탭 변경 → 스크롤 최상단 이동
+  // 수정 중인 주식 일지 id
+  const [editId, setEditId] = useState<string | null>(null);
+
+  // 주식 일지 조회 조건
+  const initSearchQuery: JournalRequest  = { status: "", page: 1, pageSize: PAGE_SIZE };
+  const [searchQuery, setSearchQuery] = useState<JournalRequest>(initSearchQuery);
+
+  const { data: journalResponse } = useGetJournalListQuery(searchQuery);
+
+  // 탭 변경 또는 조회 조건 변경 → 스크롤 최상단 이동
   useEffect(() => {
     window.scrollTo({ top: 0 });
-  }, [tab]);
+  }, [tab, searchQuery]);
 
-  // 수정 중인 주식일지 id
-  const [editId, setEditId] = useState<string | null>(null);
+  // 주식 일지 조회 조건 변경 (단일필드)
+  const handleSearchChange = <K extends keyof JournalRequest>(key: K, value: JournalRequest[K]) => {
+    setSearchQuery((prev) => ({ ...prev, [key]: value, page: 1 }));
+  };
+
+  // 페이지 변경
+  const handlePageChange = (page: number) => {
+    setSearchQuery((prev) => ({ ...prev, page }));
+  };
 
   // 탭 전환
   const handleTabChange = (value: string) => {
@@ -33,7 +53,8 @@ export default function JournalPage() {
   };
 
   // 작성/수정 완료 → 목록 진입
-  const handleDone = () => {
+  const handleDone = (keepSearchQuery: boolean) => {
+    if (!keepSearchQuery) setSearchQuery(initSearchQuery);
     setEditId(null);
     setTab("LIST");
   };
@@ -48,7 +69,18 @@ export default function JournalPage() {
       {/* 밑줄 탭 */}
       <UnderlineTab options={TABS} value={tab} onChange={handleTabChange} />
 
-      {tab === "LIST" && <JournalListView onWriteNew={() => handleTabChange("WRITE")} onEdit={handleEdit} />}
+      {/* 주식 일지 목록 */}
+      <JournalListView
+        onWriteNew={() => handleTabChange("WRITE")}
+        onEdit={handleEdit}
+        journalResponse={journalResponse}
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
+        onPageChange={handlePageChange}
+        className={tab === "LIST" ? "block" : "hidden"}
+      />
+
+      {/* 주식 일지 등록 및 수정 */}
       {tab === "WRITE" && <JournalWriteView editId={editId} onDone={handleDone} />}
     </div>
   );

@@ -1,11 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
-import { useGetJournalListQuery } from "@/features/journal/journal.query";
 import FilterTabs from "@/shared/components/tab/FilterTabs";
 import JournalListSkeleton from "@/features/journal/skeleton/JournalListSkeleton";
-import { JournalRequest } from "@/features/journal/journal.type";
+import { JournalRequest, JournalResponse } from "@/features/journal/journal.type";
 import { useGetCommonCodesQuery } from "@/shared/common-code/common-code.query";
 import { toFilterOptions } from "@/shared/utils/view";
 import FilterSkeleton from "@/features/journal/skeleton/FilterSkeleton";
@@ -13,51 +11,42 @@ import Button from "@/shared/components/button/Button";
 import JournalCard from "@/features/journal/components/JournalCard";
 import Pagination from "@/shared/components/pagination/Pagination";
 
-const PAGE_SIZE = 10;
-
 interface JournalListViewProps {
   onWriteNew: () => void;
   onEdit: (id: string) => void;
+  journalResponse?: JournalResponse;
+  searchQuery: JournalRequest;
+  onSearchChange: <K extends keyof JournalRequest>(key: K, value: JournalRequest[K]) => void;
+  onPageChange: (page: number) => void;
+  className?: string;
 }
 
-export default function JournalListView({ onWriteNew, onEdit }: JournalListViewProps) {
+export default function JournalListView({
+  onWriteNew,
+  onEdit,
+  journalResponse,
+  searchQuery,
+  onSearchChange,
+  onPageChange,
+  className
+}: JournalListViewProps) {
 
-  // 주식 일지 조회 조건
-  const [searchQuery, setSearchQuery] = useState<JournalRequest>({
-    status: "", page: 1, pageSize: PAGE_SIZE
-  });
-
-  // 조회 조건 변경 → 스크롤 최상단 이동
-  useEffect(() => {
-    window.scrollTo({ top: 0 });
-  }, [searchQuery]);
-
-  const { data: journalStatuses, isLoading: isStatusesLoading } = useGetCommonCodesQuery({ groupId: "JOURNAL_STATUS" });
-  const { data: journalResponse, isLoading } = useGetJournalListQuery(searchQuery);
-
-  const statuses = journalStatuses?.items ?? [];
+  const isLoading = !journalResponse;
   const journals = journalResponse?.items ?? [];
 
-  // 주식 일지 조회 조건 변경 (단일필드)
-  const handleSearchChange = <K extends keyof JournalRequest>(key: K, value: JournalRequest[K]) => {
-    setSearchQuery((prev) => ({ ...prev, [key]: value, page: 1 }));
-  };
-
-  // 페이지 변경
-  const handlePageChange = (page: number) => {
-    setSearchQuery((prev) => ({ ...prev, page }));
-  };
+  const { data: journalStatuses, isLoading: isStatusesLoading } = useGetCommonCodesQuery({ groupId: "JOURNAL_STATUS" });
+  const statuses = journalStatuses?.items ?? [];
 
   return (
-    <div>
+    <div className={className}>
       {/* 필터 */}
-      <div className="flex md:justify-end mb-6">
+      <div className ="flex md:justify-end mb-6">
         {isStatusesLoading ?
          <FilterSkeleton /> :
          <FilterTabs
            options={toFilterOptions(statuses)}
            value={searchQuery.status}
-           onChange={(value) => handleSearchChange("status", value)}
+           onChange={(value) => onSearchChange("status", value)}
            variant="sub"
            className="-mx-6 px-6"
          />
@@ -89,7 +78,7 @@ export default function JournalListView({ onWriteNew, onEdit }: JournalListViewP
           <div className="divide-y divide-gray-800/50">
             {journals.map(journal => <JournalCard key={journal.id} journal={journal} onEdit={onEdit} />)}
           </div>
-          <Pagination page={searchQuery.page} totalPages={journalResponse?.totalPages ?? 1} onPageChange={handlePageChange} />
+          <Pagination page={searchQuery.page} totalPages={journalResponse?.totalPages ?? 1} onPageChange={onPageChange} />
         </div>
       )}
     </div>
