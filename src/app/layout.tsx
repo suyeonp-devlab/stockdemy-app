@@ -6,7 +6,7 @@ import Providers from "@/app/Providers";
 const description = "AI로 복기하는 나만의 주식 일지";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(process.env.SITE_URL ?? "http://localhost:3000"),
   title: { default: "Stockdemy", template: "%s | Stockdemy" },
   description,
   openGraph: {
