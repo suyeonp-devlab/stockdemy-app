@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useOverlay } from "@/system/overlay/useOverlay";
-import { overlayBridge } from "@/shared/lib/overlay-bridge";
+import { overlayBridge } from "@/system/overlay/overlay-bridge";
 
 /**
  * React Context(useOverlay)의 overlay 함수를 React 외부(axios 등)에서 사용할 수 있도록

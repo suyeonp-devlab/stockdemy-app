@@ -2,7 +2,7 @@ import type { PropsWithChildren } from "react";
 
 interface FormFieldProps extends PropsWithChildren {
   label: string;
-  error?: string;      // 에러 메시지 (에러 시 hint 대신 표시)
+  error?: string;      // 에러 메시지 (에러 시 help 대신 표시)
   help?: string;       // 안내 문구
   className?: string;
 }

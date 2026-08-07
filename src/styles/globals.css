@@ -3,6 +3,9 @@
 @theme {
   --color-navy: #1E3A5F;
   --animate-fadein: fadein 0.8s ease forwards;
+  --animate-flash-up: flash-up 1s ease-out;
+  --animate-flash-down: flash-down 1s ease-out;
+  --animate-marquee: marquee 25s linear infinite;
 }
 
 @keyframes fadein {
@@ -10,9 +13,28 @@
   100% { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes flash-up {
+  0% { background-color: rgba(248, 113, 113, 0.25); }
+  100% { background-color: transparent; }
+}
+
+@keyframes flash-down {
+  0% { background-color: rgba(56, 189, 248, 0.25); }
+  100% { background-color: transparent; }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 html, body {
   font-family: "Pretendard", sans-serif;
   background-color: var(--color-gray-950);
+}
+
+@media (min-width: 768px) {
+  body { min-width: 1300px; }
 }
 
 @font-face {
@@ -45,4 +67,41 @@ html, body {
   font-weight: 700;
   font-style: normal;
   font-display: swap;
+}
+
+/*자동완성 스타일*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--color-gray-100);
+  caret-color: var(--color-gray-100);
+  -webkit-box-shadow: 0 0 0 1000px var(--color-gray-800) inset;
+  box-shadow: 0 0 0 1000px var(--color-gray-800) inset;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/*스크롤바 스타일*/
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-fade-mask {
+  mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
+}
+
+/*차트 툴팁 스타일*/
+.chart-tooltip-row {
+  display: flex;
+  align-items: center;
+  line-height: 1.5;
+}
+
+.chart-tooltip-row .label {
+  width: 40px;
+  flex-shrink: 0;
 }

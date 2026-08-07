@@ -1,9 +1,6 @@
 import { useEffect } from "react";
 
-/**
- * body 스크롤 고정 hook
- * active가 true일 때 body를 fixed 처리해 스크롤을 막는다.
- */
+/** body 스크롤 고정 hook */
 export function useBodyScrollLock(active: boolean) {
 
   useEffect(() => {

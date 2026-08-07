@@ -1,6 +1,8 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
-import { overlayBridge } from "@/shared/lib/overlay-bridge";
+import { overlayBridge } from "@/system/overlay/overlay-bridge";
 import { ApiRequestMeta, ApiResponse } from "@/shared/types/api.type";
+import { useAuthStore } from "@/shared/store/auth.store";
+import { getQueryClient } from "@/shared/lib/query-client";
 
 declare module "axios" {
   interface AxiosRequestConfig { meta?: ApiRequestMeta; }
@@ -9,14 +11,6 @@ declare module "axios" {
     _retry?: boolean;
   }
 }
-
-// accessToken 메모리 보관
-let accessToken: string | null = null;
-
-// accessToken 메모리 세팅
-export const setAccessToken = (token: string | null) => {
-  accessToken = token;
-};
 
 // refresh 진행상태 (null이 아닌 경우 → refresh 진행중)
 let refreshPromise: Promise<void> | null = null;
@@ -37,6 +31,7 @@ axiosInstance.interceptors.request.use(
     }
 
     // token 세팅
+    const accessToken = useAuthStore.getState().accessToken;
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -55,15 +50,17 @@ axiosInstance.interceptors.response.use(
     const status = error.response?.status;
 
     // refresh 시도 조건
-    // - 401 에러일 것
-    // - 기존 요청 정보가 존재할 것
-    // - 아직 refresh를 시도하지 않은 요청일 것
-    // - refresh 제외 요청이 아닐 것
+    // 1) 401 에러
+    // 2) 기존 요청 정보 존재
+    // 3) refresh 시도하지 않은 요청
+    // 4) refresh 제외 요청이 아닐 것
+    // 5) 현재 세션에서 refresh 실패한 적 없을 것
     const shouldRefresh =
       status === 401 &&
       !!originalRequest &&
       !originalRequest._retry &&
-      !originalRequest.meta?.skipAuthRefresh;
+      !originalRequest.meta?.skipAuthRefresh &&
+      !useAuthStore.getState().sessionExpired;
 
     if (shouldRefresh) {
       originalRequest._retry = true;
@@ -78,16 +75,16 @@ axiosInstance.interceptors.response.use(
         return axiosInstance.request(originalRequest);
 
       } catch {
-        // refresh 실패 → 세션 만료로 간주 (로그인 페이지로 이동)
-        accessToken = null;
-        if (typeof window !== "undefined") window.location.href = "/login";
-        return new Promise<never>(() => {});
+        // refresh 실패 → 세션 만료로 간주
+        useAuthStore.getState().logout();
+        void getQueryClient().invalidateQueries();
+        return Promise.reject(error);
       }
     }
 
     if (!originalRequest?.meta?.skipErrorAlert) {
       const data = error.response?.data as ApiResponse<unknown>;
-      const message = data?.message ?? "알 수 없는 오류가 발생했습니다.";
+      const message = data?.message ?? "일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.";
       overlayBridge.alert(message);
     }
 
@@ -97,19 +94,13 @@ axiosInstance.interceptors.response.use(
 
 export default axiosInstance;
 
-/**
- * 공통 API 요청 함수 (nullable)
- * 서버 응답의 data를 그대로 반환 → 성공이더라도 data가 null일 수 있는 API에서 사용한다.
- */
+/** 공통 API 요청 함수 (nullable) */
 export const request = async <T>(config: AxiosRequestConfig): Promise<T | null> => {
   const response = await axiosInstance.request<ApiResponse<T>>(config);
   return response.data.data;
 };
 
-/**
- * 공통 API 요청 함수 (data 필수)
- * 서버 응답의 data가 반드시 존재해야 하는 API 사용 → data가 null인 경우 비정상 응답으로 간주하고 에러를 발생시킨다.
- */
+/** 공통 API 요청 함수 (data 필수) */
 export const requestRequired = async <T>(config: AxiosRequestConfig): Promise<T> => {
 
   const response = await axiosInstance.request<ApiResponse<T>>(config);
@@ -125,10 +116,10 @@ export const requestRequired = async <T>(config: AxiosRequestConfig): Promise<T>
 // 토큰 갱신 api
 const refreshAccessToken = async (): Promise<void> => {
 
-  const token = await request<string>({ method: "POST", url: "/api/auth/refresh", meta: {
-      skipAuthRefresh: true, skipErrorAlert: true
-    }});
+  const token = await request<string>({ method: "POST", url: "/api/auth/refresh", meta:
+    { skipAuthRefresh: true, skipErrorAlert: true }
+  });
 
   if (!token) throw new Error("accessToken is null");
-  accessToken = token;
+  useAuthStore.getState().setAccessToken(token);
 };

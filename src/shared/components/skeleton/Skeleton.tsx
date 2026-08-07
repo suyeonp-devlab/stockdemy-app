@@ -7,5 +7,8 @@ interface SkeletonProps {
 }
 
 export default function Skeleton({ className, style }: SkeletonProps) {
-  return <div className={clsx("animate-pulse bg-gray-800 rounded-md", className)} style={style} />;
+
+  return (
+    <div className={clsx("animate-pulse bg-gray-800 rounded-md", className)} style={style} />
+  );
 }
