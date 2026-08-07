@@ -7,7 +7,7 @@ export const getNewsDetailServer = async (id: string | number): Promise<NewsDeta
   const newsId = Number(id);
   if (isNaN(newsId)) return null;
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/news/${newsId}`, { next: { revalidate: 300 } });
+  const response = await fetch(`${process.env.INTERNAL_API_URL}/api/news/${newsId}`, { next: { revalidate: 300 } });
   if (!response.ok) return null;
 
   const body: ApiResponse<NewsDetail> = await response.json();
