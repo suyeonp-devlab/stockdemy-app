@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { HelpCircle, Search } from "lucide-react";
 import { useGetStockListQuery } from "@/features/stock/stock.query";
 import { StockRequest, StockURLSearchParams, TabMode } from "@/features/stock/stock.type";
-import { useGetCommonCodesQuery } from "@/shared/common-code/common-code.query";
+import { useGetCommonCodesQuery } from "@/shared/code/code.query";
 import { toFilterOptions } from "@/shared/utils/view";
 import Input from "@/shared/components/form/Input";
 import { buildLoginUrl } from "@/features/auth/auth.lib";
@@ -50,8 +50,8 @@ export default function StockPage() {
   const { data: stockResponse, isLoading } = useGetStockListQuery(searchQuery);
 
   const stockList =  stockResponse?.items ?? [];
-  const markets = stockMarkets?.items ?? [];
-  const sectors = stockSectors?.items ?? [];
+  const markets = stockMarkets?.codes ?? [];
+  const sectors = stockSectors?.codes ?? [];
 
   // 종목 조회 조건 변경 (단일필드)
   const handleSearchChange = <K extends keyof StockURLSearchParams>(key: K, value: StockURLSearchParams[K]) => {

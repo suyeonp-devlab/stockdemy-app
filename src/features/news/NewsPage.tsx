@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { HelpCircle, Search } from "lucide-react";
 import { useGetNewsListQuery } from "@/features/news/news.query";
-import { useGetCommonCodesQuery } from "@/shared/common-code/common-code.query";
+import { useGetCommonCodesQuery } from "@/shared/code/code.query";
 import { toFilterOptions } from "@/shared/utils/view";
 import { useAuthStore } from "@/shared/store/auth.store";
 import Input from "@/shared/components/form/Input";
@@ -49,7 +49,7 @@ export default function NewsPage() {
   const { data: newsResponse, isLoading } = useGetNewsListQuery(searchQuery);
 
   const newsList = newsResponse?.items ?? [];
-  const categories = newsCategories?.items ?? [];
+  const categories = newsCategories?.codes ?? [];
 
   // 카테고리 필터 옵션
   const tabOptions = categories.length === 0 ? [] : [

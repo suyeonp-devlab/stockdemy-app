@@ -4,7 +4,7 @@ import { Plus } from "lucide-react";
 import FilterTabs from "@/shared/components/tab/FilterTabs";
 import JournalListSkeleton from "@/features/journal/skeleton/JournalListSkeleton";
 import { JournalRequest, JournalResponse } from "@/features/journal/journal.type";
-import { useGetCommonCodesQuery } from "@/shared/common-code/common-code.query";
+import { useGetCommonCodesQuery } from "@/shared/code/code.query";
 import { toFilterOptions } from "@/shared/utils/view";
 import FilterSkeleton from "@/features/journal/skeleton/FilterSkeleton";
 import Button from "@/shared/components/button/Button";
@@ -35,7 +35,7 @@ export default function JournalListView({
   const journals = journalResponse?.items ?? [];
 
   const { data: journalStatuses, isLoading: isStatusesLoading } = useGetCommonCodesQuery({ groupId: "JOURNAL_STATUS" });
-  const statuses = journalStatuses?.items ?? [];
+  const statuses = journalStatuses?.codes ?? [];
 
   return (
     <div className={className}>
