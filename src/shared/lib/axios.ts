@@ -3,6 +3,7 @@ import { overlayBridge } from "@/system/overlay/overlay-bridge";
 import { ApiRequestMeta, ApiResponse } from "@/shared/types/api.type";
 import { useAuthStore } from "@/shared/store/auth.store";
 import { getQueryClient } from "@/shared/lib/query-client";
+import { AuthTokenResponse } from "@/features/auth/auth.type";
 
 declare module "axios" {
   interface AxiosRequestConfig { meta?: ApiRequestMeta; }
@@ -116,10 +117,10 @@ export const requestRequired = async <T>(config: AxiosRequestConfig): Promise<T>
 // 토큰 갱신 api
 const refreshAccessToken = async (): Promise<void> => {
 
-  const token = await request<string>({ method: "POST", url: "/api/auth/refresh", meta:
+  const response = await request<AuthTokenResponse>({ method: "POST", url: "/api/auth/refresh", meta:
     { skipAuthRefresh: true, skipErrorAlert: true }
   });
 
-  if (!token) throw new Error("accessToken is null");
-  useAuthStore.getState().setAccessToken(token);
+  if (!response) throw new Error("accessToken is null");
+  useAuthStore.getState().setAccessToken(response.accessToken);
 };
