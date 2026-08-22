@@ -14,6 +14,10 @@ export default function MePage() {
 
   const { data: me, isLoading } = useGetMeQuery();
 
+  const isGoogleUser = me?.provider === "GOOGLE";
+
+  if (!isLoading && !me) return null;
+
   return (
     <div className="max-w-screen-2xl mx-auto px-6 md:px-10 py-10">
       <div className="mb-8">
@@ -25,19 +29,21 @@ export default function MePage() {
         {isLoading ? <MeProfileCardSkeleton /> : <MeProfileCard me={me!} />}
 
         <div className="bg-gray-900 rounded-md border border-gray-800 divide-y divide-gray-800 overflow-hidden flex-1">
-          <button
-            type="button"
-            onClick={() => openPopup("비밀번호 변경", <ChangePasswordForm />)}
-            className="w-full flex items-center gap-3 px-6 py-4 text-left hover:bg-gray-800 transition-colors"
-          >
-            <KeyRound className="w-4 h-4 text-gray-500 flex-shrink-0" />
-            <span className="flex-1 text-sm text-gray-200">비밀번호 변경</span>
-            <ChevronRight className="w-4 h-4 text-gray-600" />
-          </button>
+          {!isGoogleUser && (
+            <button
+              type="button"
+              onClick={() => openPopup("비밀번호 변경", <ChangePasswordForm />)}
+              className="w-full flex items-center gap-3 px-6 py-4 text-left hover:bg-gray-800 transition-colors"
+            >
+              <KeyRound className="w-4 h-4 text-gray-500 flex-shrink-0" />
+              <span className="flex-1 text-sm text-gray-200">비밀번호 변경</span>
+              <ChevronRight className="w-4 h-4 text-gray-600" />
+            </button>
+          )}
 
           <button
             type="button"
-            onClick={() => openPopup("회원 탈퇴", <WithdrawForm />)}
+            onClick={() => openPopup("회원 탈퇴", <WithdrawForm isGoogleUser={isGoogleUser} />)}
             className="w-full flex items-center gap-3 px-6 py-4 text-left hover:bg-gray-800 transition-colors"
           >
             <UserX className="w-4 h-4 text-red-500 flex-shrink-0" />

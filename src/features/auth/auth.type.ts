@@ -54,5 +54,6 @@ export interface AuthTokenResponse {
 // 내 정보 response
 export interface MeResponse {
   email: string;
+  provider: string;
   createdAt: string;
 }
