@@ -40,7 +40,7 @@ export interface StockQuote {
   marketCap: number;
 }
 
-// 종목 기초데이터
+// 종목 기초데이터 (수집되지 않은 항목은 null 또는 응답에서 누락)
 export interface StockFundamentals {
   stockCode: string;
   stockName: string;
@@ -52,15 +52,15 @@ export interface StockFundamentals {
   sentimentNm: string;
   favorite: boolean;
   aiComment: string | null;
-  prevClose: number;          // 전일종가
-  week52High: number;         // 52주 최고가
-  week52Low: number;          // 52주 최저가
-  sharesOutstanding: number;  // 발행주식수
-  foreignOwnership: number;   // 외국인 보유율
-  eps: number;                // 주당순이익
-  bps: number;                // 주당순자산
-  annualDividend: number;     // 연간 배당금
-  sectorPer: number;          // 동일 업종 평균 PER
+  prevClose: number | null;          // 전일종가
+  week52High: number | null;         // 52주 최고가
+  week52Low: number | null;          // 52주 최저가
+  sharesOutstanding: number | null;  // 발행주식수
+  foreignOwnership: number | null;   // 외국인 보유율
+  eps: number | null;                // 주당순이익
+  bps: number | null;                // 주당순자산
+  annualDividend: number | null;     // 연간 배당금
+  sectorPer: number | null;          // 동일 업종 평균 PER
 }
 
 // 일별 시세
