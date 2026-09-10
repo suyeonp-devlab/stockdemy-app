@@ -42,7 +42,7 @@ export default function SectorRankingCard() {
           </div>
           <div className="hidden md:block md:flex-1 min-w-0">
             {rightSectors.map((sector, idx) => (
-              <SectorRankingCardRow key={sector.sector} sector={sector} rank={idx+8} isHot={idx + 8 <= HOT_RANK_COUNT} />
+              <SectorRankingCardRow key={sector.sector} sector={sector} rank={half + idx + 1} isHot={half + idx + 1 <= HOT_RANK_COUNT} />
             ))}
           </div>
         </div>
