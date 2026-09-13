@@ -14,7 +14,7 @@ export interface JournalResponse {
 
 // 주식 일지 항목
 export interface Journal {
-  id: string;
+  id: number;
   stockCode: string;
   stockName: string;
   status: string;
@@ -31,7 +31,7 @@ export interface Journal {
   quantity: number;
   memo: string | null;
   aiComment: string | null;
-  createdAt: string;
+  createdAt: string;     // yyyyMMddHHmmss
 }
 
 // 주식 일지 작성 request
@@ -49,4 +49,4 @@ export interface CreateJournalRequest {
 }
 
 // 주식 일지 수정 request
-export type UpdateJournalRequest = CreateJournalRequest & { id: string; };
+export type UpdateJournalRequest = CreateJournalRequest & { id: number; };

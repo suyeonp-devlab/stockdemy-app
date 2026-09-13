@@ -17,7 +17,7 @@ export default function JournalPage() {
   const [tab, setTab] = useState<Tab>("LIST");
 
   // 수정 중인 주식 일지 id
-  const [editId, setEditId] = useState<string | null>(null);
+  const [editId, setEditId] = useState<number | null>(null);
 
   // 주식 일지 조회 조건
   const initSearchQuery: JournalRequest  = { status: "", page: 1, pageSize: PAGE_SIZE };
@@ -47,7 +47,7 @@ export default function JournalPage() {
   };
 
   // 리스트 → 수정 진입
-  const handleEdit = (id: string) => {
+  const handleEdit = (id: number) => {
     setEditId(id);
     setTab("WRITE");
   };

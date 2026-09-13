@@ -8,7 +8,7 @@ import { formatPrice } from "@/shared/utils/number";
 
 interface JournalCardProps {
   journal: Journal;
-  onEdit: (id: string) => void;
+  onEdit: (id: number) => void;
 }
 
 export default function JournalCard({ journal, onEdit }: JournalCardProps) {

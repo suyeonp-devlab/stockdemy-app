@@ -9,7 +9,7 @@ export const JOURNAL_QUERY_KEYS = {
   lists: () => [...JOURNAL_QUERY_KEYS.all(), "lists"] as const,
   list: (params: JournalRequest) => [...JOURNAL_QUERY_KEYS.lists(), params] as const,
   details: () => [...JOURNAL_QUERY_KEYS.all(), "details"] as const,
-  detail: (id: string) => [...JOURNAL_QUERY_KEYS.details(), id] as const,
+  detail: (id: number) => [...JOURNAL_QUERY_KEYS.details(), id] as const,
 };
 
 // 주식 일지 목록 조회 query
@@ -25,7 +25,7 @@ export const useGetJournalListQuery = (params: JournalRequest | null) => {
 };
 
 // 주식 일지 단건 조회 query
-export const useGetJournalQuery = (id: string | null) => {
+export const useGetJournalQuery = (id: number | null) => {
 
   const enabled = !!id;
 

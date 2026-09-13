@@ -32,7 +32,7 @@ const SEARCH_COUNT = 5;
 type DateMode = "DATE" | "DATE_TIME";
 
 interface JournalWriteViewProps {
-  editId: string | null;
+  editId: number | null;
   onDone: (keepSearchQuery: boolean) => void;
 }
 

@@ -13,7 +13,7 @@ export const getJournalList = async (params: JournalRequest) => {
 }
 
 // 주식 일지 단건 조회
-export const getJournal = async (id: string) => {
+export const getJournal = async (id: number) => {
   return requestRequired<Journal>({ method: "GET", url: `/api/journals/${id}` });
 }
 
@@ -28,6 +28,6 @@ export const updateJournal = async (data: UpdateJournalRequest) => {
 }
 
 // AI 복기 분석 요청
-export const requestAiReview = async (id: string) => {
+export const requestAiReview = async (id: number) => {
   await request<void>({ method: "POST", url: `/api/journals/${id}/ai-review` });
 }

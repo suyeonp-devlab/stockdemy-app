@@ -13,7 +13,7 @@ import Pagination from "@/shared/components/pagination/Pagination";
 
 interface JournalListViewProps {
   onWriteNew: () => void;
-  onEdit: (id: string) => void;
+  onEdit: (id: number) => void;
   journalResponse?: JournalResponse;
   searchQuery: JournalRequest;
   onSearchChange: <K extends keyof JournalRequest>(key: K, value: JournalRequest[K]) => void;
