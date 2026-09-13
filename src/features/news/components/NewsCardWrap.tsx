@@ -46,6 +46,11 @@ export default function NewsCardWrap({
           </div>
 
           <Pagination page={page} totalPages={totalPages} onPageChange={onPageChange} />
+
+          {/* 저작권 고지 */}
+          <p className="mt-6 text-xs text-gray-600 leading-relaxed">
+            뉴스 원문의 저작권은 각 언론사에 있으며, 요약과 평가는 AI가 생성한 내용입니다.
+          </p>
         </>
       )}
     </div>

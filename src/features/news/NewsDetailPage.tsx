@@ -8,6 +8,7 @@ import NewsDetailSkeleton from "@/features/news/skeleton/NewsDetailSkeleton";
 import NotFoundFeedback from "@/shared/components/feedback/NotFoundFeedback";
 import RelatedNewsCard from "@/features/news/components/RelatedNewsCard";
 import RelatedStockChip from "@/features/news/components/RelatedStockChip";
+import { formatDate } from "@/shared/utils/date-time";
 
 interface NewsDetailPageProps {
   id: string | number;
@@ -46,7 +47,7 @@ export default function NewsDetailPage({ id }: NewsDetailPageProps) {
 
           {/* 제목 */}
           <h1 className="text-base md:text-2xl font-bold text-gray-100 leading-relaxed mb-1">{news.title}</h1>
-          <p className="text-xs md:text-sm text-gray-600 mb-4">{news.publishedAt} · {news.categoryNm}</p>
+          <p className="text-xs md:text-sm text-gray-600 mb-4">{formatDate(news.publishedAt, "yyyy.MM.dd HH:mm")} · {news.categoryNm}</p>
 
           {/* 내용 */}
           <div className="border-t border-gray-800 pt-8 space-y-9">
@@ -71,6 +72,11 @@ export default function NewsDetailPage({ id }: NewsDetailPageProps) {
               </div>
             </section>
           </div>
+
+          {/* 저작권 고지 */}
+          <p className="mt-8 text-xs text-gray-600 leading-relaxed">
+            뉴스 원문의 저작권은 각 언론사에 있으며, 요약과 평가는 AI가 생성한 내용입니다.
+          </p>
 
           {/* 출처 */}
           <div className="md:border-t md:border-gray-800 mt-4 md:mt-8 pt-4 text-xs md:text-sm text-gray-500 text-right">

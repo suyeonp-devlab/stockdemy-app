@@ -1,6 +1,7 @@
 import Link from "next/link";
 import clsx from "clsx";
 import { News } from "@/features/news/news.type";
+import { formatRelativeTime } from "@/shared/utils/date-time";
 
 interface NewsCardProps {
   news: News;
@@ -29,7 +30,7 @@ export default function NewsCard({
             <span className="text-sm text-gray-600">·</span>
           </>
         )}
-        <span className="text-sm text-gray-600">{news.publishedAt}</span>
+        <span className="text-sm text-gray-600">{formatRelativeTime(news.publishedAt)}</span>
         <span className={clsx("px-2 py-0.5 text-xs md:text-sm font-medium rounded-md ml-auto", sentimentStyles[news.sentiment])}>
           {news.sentimentNm}
         </span>

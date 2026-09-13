@@ -33,7 +33,7 @@ export default function SentimentCard() {
         ))}
       </div>
 
-      <p className="text-xs text-gray-600 mt-4">오늘 수집된 뉴스 {formatNumber(summary?.totalCount ?? 0)}건 기준</p>
+      <p className="text-xs text-gray-600 mt-4">최근 7일 뉴스 {formatNumber(summary?.totalCount ?? 0)}건 기준</p>
     </div>
   );
 }

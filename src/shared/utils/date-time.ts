@@ -55,6 +55,44 @@ export const formatDate = (
 };
 
 /**
+ * 압축 일시를 현재 기준 상대 시간으로 변환
+ * @param value 일시 문자열 (yyyyMMddHHmmss)
+ * @example formatRelativeTime("20260913093000") → "3시간 전"
+ * @example formatRelativeTime("20260901093000") → "2026.09.01" (7일 경과)
+ */
+export const formatRelativeTime = (value: string | null | undefined): string => {
+
+  if (!value) return "";
+
+  const compact = value.replace(/\D/g, "");
+
+  // 압축 일시 형식이 아니면 받은 값을 그대로 표시
+  if (compact.length !== 14) return value;
+
+  const date = new Date(
+    Number(compact.slice(0, 4)),
+    Number(compact.slice(4, 6)) - 1,
+    Number(compact.slice(6, 8)),
+    Number(compact.slice(8, 10)),
+    Number(compact.slice(10, 12)),
+    Number(compact.slice(12, 14)),
+  );
+
+  const minutes = Math.floor((Date.now() - date.getTime()) / 60000);
+
+  if (minutes < 1) return "방금 전";
+  if (minutes < 60) return `${minutes}분 전`;
+
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}시간 전`;
+
+  const days = Math.floor(hours / 24);
+  if (days < 7) return `${days}일 전`;
+
+  return formatDate(compact, "yyyy.MM.dd");
+};
+
+/**
  * Date 객체를 구분자 없는 날짜 문자열로 변환
  * @param date 변환할 Date 객체
  * @example compactDate(new Date(2025, 6, 26, 15, 30, 45)) → "20250726153045"
