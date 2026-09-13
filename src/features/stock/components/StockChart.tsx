@@ -27,12 +27,14 @@ interface StockChartProps {
   stockCode: string;
   todayQuote: TodayQuote;
   aiComment?: string | null;
+  aiAnalyzedAt?: string | null;
 }
 
 export default function StockChart({
   stockCode,
   todayQuote,
-  aiComment
+  aiComment,
+  aiAnalyzedAt
 }: StockChartProps) {
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -215,7 +217,7 @@ export default function StockChart({
       </div>
 
       {/* AI 코멘트 */}
-      {aiComment && <AiCommentCard aiComment={aiComment} />}
+      {aiComment && <AiCommentCard aiComment={aiComment} analyzedAt={aiAnalyzedAt} />}
     </div>
   );
 }

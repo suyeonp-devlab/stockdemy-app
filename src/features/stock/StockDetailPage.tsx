@@ -40,9 +40,12 @@ export default function StockDetailPage({ stockCode }: StockDetailPageProps) {
         <div className="flex justify-between mb-1">
           <div className="flex items-center">
             <span className="md:text-2xl font-bold text-gray-100 mr-2 md:mr-3">{fundamentals.stockName}</span>
-            <span className={clsx("px-2 py-1 text-xs md:text-sm font-medium rounded-md", sentimentStyles[fundamentals.sentiment])}>
-              {fundamentals.sentimentNm}
-            </span>
+            {/* AI 신호 (분석 전이면 숨김) */}
+            {fundamentals.sentiment && (
+              <span className={clsx("px-2 py-1 text-xs md:text-sm font-medium rounded-md", sentimentStyles[fundamentals.sentiment])}>
+                {fundamentals.sentimentNm}
+              </span>
+            )}
           </div>
           <div className="text-lg md:text-2xl font-bold text-gray-100">
             {formatPrice(todayQuote.price, fundamentals.market)}
@@ -62,7 +65,7 @@ export default function StockDetailPage({ stockCode }: StockDetailPageProps) {
       {/* 밑줄 탭 */}
       <UnderlineTabs options={TABS} value={tab} onChange={(value) => setTab(value as Tab)} />
 
-      {tab === "CHART" && <StockChart stockCode={fundamentals.stockCode} todayQuote={todayQuote} aiComment={fundamentals.aiComment} />}
+      {tab === "CHART" && <StockChart stockCode={fundamentals.stockCode} todayQuote={todayQuote} aiComment={fundamentals.aiComment} aiAnalyzedAt={fundamentals.aiAnalyzedAt} />}
       {tab === "NEWS" && <NewsDisclosureCard stockCode={fundamentals.stockCode} />}
       {tab === "INFO" && <StockInfoCard fundamentals={fundamentals} todayQuote={todayQuote} />}
     </div>

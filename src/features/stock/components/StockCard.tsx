@@ -78,9 +78,12 @@ export default function StockCard({
         </div>
       </div>
 
-      <span className={clsx("hidden sm:inline-flex px-2 py-0.5 text-sm font-medium rounded-md flex-shrink-0", sentimentStyle[stock.sentiment])}>
-        {stock.sentimentNm}
-      </span>
+      {/* AI 신호 (분석 전이면 숨김) */}
+      {stock.sentiment && (
+        <span className={clsx("hidden sm:inline-flex px-2 py-0.5 text-sm font-medium rounded-md flex-shrink-0", sentimentStyle[stock.sentiment])}>
+          {stock.sentimentNm}
+        </span>
+      )}
 
       {showFavorite && (
         <IconButton

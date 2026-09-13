@@ -27,8 +27,8 @@ export interface Stock {
   price: number;
   changePercent: number;
   marketCap: number;
-  sentiment: string;
-  sentimentNm: string;
+  sentiment: string | null;          // AI 분석 전이면 null
+  sentimentNm: string | null;
   favorite: boolean;
 }
 
@@ -48,10 +48,11 @@ export interface StockFundamentals {
   marketNm: string;
   sector: string;
   sectorNm: string;
-  sentiment: string;
-  sentimentNm: string;
+  sentiment: string | null;          // AI 분석 전이면 null
+  sentimentNm: string | null;
   favorite: boolean;
   aiComment: string | null;
+  aiAnalyzedAt: string | null;       // AI 분석 기준 일시 (yyyyMMddHHmmss)
   prevClose: number | null;          // 전일종가
   week52High: number | null;         // 52주 최고가
   week52Low: number | null;          // 52주 최저가
