@@ -31,6 +31,8 @@ ENV SITE_URL=$SITE_URL
 ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=$NEXT_PUBLIC_GOOGLE_CLIENT_ID
 
 ENV NEXT_TELEMETRY_DISABLED=1
+# EC2(1GB)에서 빌드하므로 Node 힙 상한 지정
+ENV NODE_OPTIONS=--max-old-space-size=768
 RUN npm run build
 
 # ===== runner: 실제로 컨테이너가 실행될 때 쓰이는 최종 이미지 =====
